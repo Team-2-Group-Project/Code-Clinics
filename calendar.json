@@ -68,23 +68,6 @@
     },
     {
         "kind": "calendar#event",
-        "etag": "\"3208993473060000\"",
-        "id": "6sf439jakl3hsbtlata3ur0u6c",
-        "status": "confirmed",
-        "htmlLink": "https://www.google.com/calendar/event?eid=NnNmNDM5amFrbDNoc2J0bGF0YTN1cjB1NmMgbXNlZ2FsQHN0dWRlbnQud2V0aGlua2NvZGUuY28uemE",
-        "created": "2020-11-04T13:32:16.000Z",
-        "updated": "2020-11-04T13:32:16.530Z",
-        "summary": "bob",
-        "creator": { "email": "msegal@student.wethinkcode.co.za", "self": true },
-        "organizer": { "email": "msegal@student.wethinkcode.co.za", "self": true },
-        "start": { "dateTime": "2020-11-05T19:45:00+02:00" },
-        "end": { "dateTime": "2020-11-05T20:30:00+02:00" },
-        "iCalUID": "6sf439jakl3hsbtlata3ur0u6c@google.com",
-        "sequence": 0,
-        "reminders": { "useDefault": true }
-    },
-    {
-        "kind": "calendar#event",
         "etag": "\"3208992534907000\"",
         "id": "5106besv3agqi89o4ibtu5m4u8",
         "status": "confirmed",
