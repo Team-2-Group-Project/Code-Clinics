@@ -1,0 +1,117 @@
+[{
+        "kind": "calendar#event",
+        "etag": "\"3208994395528000\"",
+        "id": "5frgrfli6q0nomh9508adrp5cb",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=NWZyZ3JmbGk2cTBub21oOTUwOGFkcnA1Y2IgbXNlZ2FsQHN0dWRlbnQud2V0aGlua2NvZGUuY28uemE",
+        "created": "2020-11-04T13:39:57.000Z",
+        "updated": "2020-11-04T13:39:57.764Z",
+        "summary": "harry",
+        "creator": { "email": "msegal@student.wethinkcode.co.za", "self": true },
+        "organizer": { "email": "msegal@student.wethinkcode.co.za", "self": true },
+        "start": { "dateTime": "2020-11-05T11:45:00+02:00" },
+        "end": { "dateTime": "2020-11-05T12:45:00+02:00" },
+        "iCalUID": "5frgrfli6q0nomh9508adrp5cb@google.com",
+        "sequence": 0,
+        "reminders": { "useDefault": true }
+    },
+    {
+        "kind": "calendar#event",
+        "etag": "\"3208993481258000\"",
+        "id": "6g6ig1smjkpavuheadpacn38fi",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=Nmc2aWcxc21qa3BhdnVoZWFkcGFjbjM4ZmkgbXNlZ2FsQHN0dWRlbnQud2V0aGlua2NvZGUuY28uemE",
+        "created": "2020-11-04T13:32:20.000Z",
+        "updated": "2020-11-04T13:32:20.629Z",
+        "summary": "bob",
+        "creator": { "email": "msegal@student.wethinkcode.co.za", "self": true },
+        "organizer": { "email": "msegal@student.wethinkcode.co.za", "self": true },
+        "start": { "dateTime": "2020-11-05T14:15:00+02:00" },
+        "end": { "dateTime": "2020-11-05T15:15:00+02:00" },
+        "iCalUID": "6g6ig1smjkpavuheadpacn38fi@google.com",
+        "sequence": 0,
+        "reminders": { "useDefault": true }
+    },
+    {
+        "kind": "calendar#event",
+        "etag": "\"3208994388440000\"",
+        "id": "7595llmj50sl23j7eij21cg3ft",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=NzU5NWxsbWo1MHNsMjNqN2VpajIxY2czZnQgbXNlZ2FsQHN0dWRlbnQud2V0aGlua2NvZGUuY28uemE",
+        "created": "2020-11-04T13:39:54.000Z",
+        "updated": "2020-11-04T13:39:54.220Z",
+        "summary": "byron",
+        "creator": { "email": "msegal@student.wethinkcode.co.za", "self": true },
+        "organizer": { "email": "msegal@student.wethinkcode.co.za", "self": true },
+        "start": { "dateTime": "2020-11-05T16:00:00+02:00" },
+        "end": { "dateTime": "2020-11-05T17:00:00+02:00" },
+        "iCalUID": "7595llmj50sl23j7eij21cg3ft@google.com",
+        "sequence": 0,
+        "reminders": { "useDefault": true }
+    },
+    {
+        "kind": "calendar#event",
+        "etag": "\"3208994402802000\"",
+        "id": "3lk25o6f15c358gpksckciv5ad",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=M2xrMjVvNmYxNWMzNThncGtzY2tjaXY1YWQgbXNlZ2FsQHN0dWRlbnQud2V0aGlua2NvZGUuY28uemE",
+        "created": "2020-11-04T13:40:01.000Z",
+        "updated": "2020-11-04T13:40:01.401Z",
+        "summary": "byron",
+        "creator": { "email": "msegal@student.wethinkcode.co.za", "self": true },
+        "organizer": { "email": "msegal@student.wethinkcode.co.za", "self": true },
+        "start": { "dateTime": "2020-11-05T17:30:00+02:00" },
+        "end": { "dateTime": "2020-11-05T18:45:00+02:00" },
+        "iCalUID": "3lk25o6f15c358gpksckciv5ad@google.com",
+        "sequence": 0,
+        "reminders": { "useDefault": true }
+    },
+    {
+        "kind": "calendar#event",
+        "etag": "\"3208993473060000\"",
+        "id": "6sf439jakl3hsbtlata3ur0u6c",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=NnNmNDM5amFrbDNoc2J0bGF0YTN1cjB1NmMgbXNlZ2FsQHN0dWRlbnQud2V0aGlua2NvZGUuY28uemE",
+        "created": "2020-11-04T13:32:16.000Z",
+        "updated": "2020-11-04T13:32:16.530Z",
+        "summary": "bob",
+        "creator": { "email": "msegal@student.wethinkcode.co.za", "self": true },
+        "organizer": { "email": "msegal@student.wethinkcode.co.za", "self": true },
+        "start": { "dateTime": "2020-11-05T19:45:00+02:00" },
+        "end": { "dateTime": "2020-11-05T20:30:00+02:00" },
+        "iCalUID": "6sf439jakl3hsbtlata3ur0u6c@google.com",
+        "sequence": 0,
+        "reminders": { "useDefault": true }
+    },
+    {
+        "kind": "calendar#event",
+        "etag": "\"3208992534907000\"",
+        "id": "5106besv3agqi89o4ibtu5m4u8",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=NTEwNmJlc3YzYWdxaTg5bzRpYnR1NW00dTggbXNlZ2FsQHN0dWRlbnQud2V0aGlua2NvZGUuY28uemE",
+        "created": "2020-11-04T13:24:27.000Z",
+        "updated": "2020-11-04T13:24:27.534Z",
+        "summary": "bob",
+        "description": "bob",
+        "creator": { "email": "msegal@student.wethinkcode.co.za", "self": true },
+        "organizer": { "email": "msegal@student.wethinkcode.co.za", "self": true },
+        "start": {
+            "dateTime": "2020-11-05T22:00:00+02:00",
+            "timeZone": "Africa/Johannesburg"
+        },
+        "end": {
+            "dateTime": "2020-11-05T22:30:00+02:00",
+            "timeZone": "Africa/Johannesburg"
+        },
+        "iCalUID": "5106besv3agqi89o4ibtu5m4u8@google.com",
+        "sequence": 0,
+        "anyoneCanAddSelf": true,
+        "reminders": {
+            "useDefault": false,
+            "overrides": [
+                { "method": "popup", "minutes": 10 },
+                { "method": "email", "minutes": 1440 }
+            ]
+        }
+    }
+]
