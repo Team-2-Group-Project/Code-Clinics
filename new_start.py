@@ -5,7 +5,10 @@ import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+
 import json
+import deletion.delete as delete
+
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar']
@@ -36,11 +39,18 @@ def main():
 
     service = build('calendar', 'v3', credentials=creds)
 
-# Call the Calendar API
+    return service
+
+
+def create_calendar_eveents(service, future_date):
+    """
+    Creates the calendar based on the days that will need to show up for the given days
+    """
+    # Call the Calendar API
     now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
     print(now)
     # Optional change days=<var> and ask user howlong into the future they want to look
-    a_week = datetime.date.today() + datetime.timedelta(days=7)
+    a_week = datetime.date.today() + datetime.timedelta(days=future_date)
     a_week = str(a_week) + 'T23:59:59.999999+02:00'
 
     print(f'Getting the upcoming {a_week} days calendar')
@@ -53,18 +63,37 @@ def main():
     with open('calendar.json', 'w+') as f:
         json.dump(events, f)
 
-    meetings = [item for item in events if item["summary"] == 'bob']
+    if not events:
+        print('No upcoming events found.')
+    for event in events:
+        start = event['start'].get('dateTime', event['start'].get('date'))
+        print(start, event['summary'])
+
+    return events
+
+
+def meetings_lists(events):
+    meetings = [item for item in events if item["summary"] == 'b']
     print(meetings)
 
     individual_time = []
+    calander_id = str()
 
     if len(meetings) > 1:
         meetin_time = input("which meeting time would you like to choose? ")
         individual_time = [
             item for item in meetings if item["start"]["dateTime"] == meetin_time]
+        calander_id = individual_time[0]['id']
+    elif len(meetings) == 1:
+        calander_id = meetings[0]['id']
+    else:
+        print("There are no meetings")
+        return service, ''
+    
+    return calander_id
 
-    print(individual_time)
-    print(individual_time[0]['id'])
+    # print(individual_time)
+    # print("cal_id:", calander_id)
     # event = {
     #     'summary': input("What would you like to call this meeting? "),
     #     'location': '',
@@ -93,15 +122,12 @@ def main():
 
     # event = service.events().insert(calendarId='primary', body=event).execute()
 
-    if not events:
-        print('No upcoming events found.')
-    for event in events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        print(start, event['summary'])
-
-    service.events().delete(calendarId='primary',
-                            eventId=individual_time[0]['id']).execute()
-
 
 if __name__ == '__main__':
-    main()
+    service = main()
+    events = create_calendar_eveents(service, 7)
+    calander_id = meetings_lists(events)
+
+    insert.insert_event()
+    update.update_event()
+    delete.delete_event(service, calander_id)
