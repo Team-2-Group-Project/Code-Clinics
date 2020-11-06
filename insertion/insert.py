@@ -22,7 +22,8 @@ def get_time():
     start_time = start_time.split(':')
     return start_time[0], start_time[1]
 
-def insert_event(service):
+
+def valid_date_checker():
     year, month, day = get_dates()
     hour, minute = get_time()
 
@@ -38,10 +39,14 @@ def insert_event(service):
 
 
     starttime = f'{year}-{month}-{day}T{hour}:{minute}:00+02:00'
-    endtime = valid_slot + datetime.timedelta(minutes=30)
-    endtime = str(endtime)
-    endtime = endtime.split(" ")
+    endtime = str(valid_slot + datetime.timedelta(minutes=30)).split(" ")
     endtime = f'{endtime[0]}T{endtime[1]}+02:00'
+
+    return starttime, endtime
+
+
+def insert_event(service):
+    starttime, endtime = valid_date_checker()
 
     event = {
         'summary': input("What would you like to call this meeting? "),
@@ -69,4 +74,9 @@ def insert_event(service):
         'anyoneCanAddSelf': True,
     }
 
-    return service.events().insert(calendarId='primary', body=event).execute()
+    try:
+        service.events().insert(calendarId='primary', body=event).execute()
+    except:
+        print("A spooky thing happened. Please try again.")
+
+    return 

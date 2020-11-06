@@ -9,6 +9,7 @@ from google.auth.transport.requests import Request
 import json
 import deletion.delete as delete
 import insertion.insert as insert
+import update.update as update
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar']
@@ -48,8 +49,6 @@ def create_calendar_events(service, future_date):
     """
     # Call the Calendar API
     now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
-    print(now)
-    # Optional change days=<var> and ask user howlong into the future they want to look
     a_week = datetime.date.today() + datetime.timedelta(days=future_date)
     a_week = str(a_week) + 'T23:59:59.999999+02:00'
 
@@ -60,30 +59,27 @@ def create_calendar_events(service, future_date):
                                           orderBy='startTime').execute()
     events = events_result.get('items', [])
 
-    with open('calendar.json', 'w+') as f:
+    with open('.calendar.json', 'w+') as f:
         json.dump(events, f)
-
-    # if not events:
-    #     print('No upcoming events found.')
-    # for event in events:
-    #     start = event['start'].get('dateTime', event['start'].get('date'))
-    #     print(start, event['summary'])
 
     return events
 
 
 def meetings_lists(events):
-    meetings = [item for item in events if item["summary"] == 'b']
-    print(meetings)
+    which_meeting = input("meeting name?: ")
+    meetings = [item for item in events if item["summary"] == which_meeting]
 
-    individual_time = []
+    if not meetings:
+        print('No upcoming meetings found.')
+    for meet in meetings:
+        start = meet['start'].get('dateTime', meet['start'].get('date'))
+        print(start, meet['summary'])
+
     calander_id = str()
 
     if len(meetings) > 1:
         meetin_time = input("which meeting time would you like to choose? ")
-        individual_time = [
-            item for item in meetings if item["start"]["dateTime"] == meetin_time]
-        calander_id = individual_time[0]['id']
+        calander_id = meetings[int(meetin_time)-1]['id']
     elif len(meetings) == 1:
         calander_id = meetings[0]['id']
     else:
@@ -98,6 +94,6 @@ if __name__ == '__main__':
     events = create_calendar_events(service, 7)
     calander_id = meetings_lists(events)
 
-    insert.insert_event(service)
-    # update.update_event()
+    # insert.insert_event(service)
+    # update.update_event(service, calander_id)
     # delete.delete_event(service, calander_id)
