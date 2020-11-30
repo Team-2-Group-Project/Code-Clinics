@@ -50,7 +50,6 @@ def creating_service():
     return service
 
 
-
 def user_name_func():
     '''
     Asking for the username, therfore it can connect to their email address
@@ -240,6 +239,7 @@ def logout():
         data = json.load(f)
     data['user'] = ''
     data['role'] = ''
+    data['expire'] = ''
     with open('.user_info.json', 'w+') as f:
         json.dump(data, f)
     try:
@@ -252,7 +252,20 @@ def log_in_checker():
     user_name = ''
     with open('.user_info.json', 'r+') as f:
         data = json.load(f)
-    # if not data['user'] == '':
+    if data['expire'] == '':
+        data['expire'] = datetime.datetime.now() + datetime.timedelta(hours=8)
+        data['expire'] = data['expire'].strftime("%Y/%m/%d, %H:%M:%S")
+        with open('.user_info.json', 'w+') as f:
+            json.dump(data, f)
+    if datetime.datetime.strptime(data['expire'],'%Y/%m/%d, %H:%M:%S') > datetime.datetime.now():
+        return data['user'],data['role']
+    else:
+        data['user'] = ''
+        data['role'] = ''
+        data['expire'] = datetime.datetime.now() + datetime.timedelta(hours=8)
+        data['expire'] = data['expire'].strftime("%Y/%m/%d, %H:%M:%S")
+        with open('.user_info.json', 'w+') as f:
+            json.dump(data, f)
     if data['user'] == '':
         user_name = user_name_func()
         creating_service()
@@ -287,14 +300,15 @@ exit - Exits the code clinic program
 if __name__ == '__main__':
     # user_name = user_name()
     # role = which_role(user_name)
+    print(datetime.datetime.now() + datetime.timedelta(hours=8))
+    # now = datetime.datetime.now()
     action = arguments()
     if action == 'logout':
-        print(("\033[1;32mLogging Out\033[0m"))
+        print(("\033[1;32mLogging out\033[0m"))
         logout()
         sys.exit()
-    else: 
+    else:
         print(("\033[1;32mWelcome to Code Clinic!\033[0m"))
     user_name,role = log_in_checker()
     service = creating_service()
-    # role  = "c"
     handle_command(action, service, user_name, role)
