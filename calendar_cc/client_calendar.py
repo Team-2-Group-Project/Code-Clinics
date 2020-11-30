@@ -67,7 +67,7 @@ def determine_and_set_table_height(dict,temp_list):
     list_of_dates = []
     for x in dict:
         list_of_dates.append(x['start']['dateTime'][:-15])
-    most_common = statistics.mode(list_of_dates)
+    # most_common = statistics.mode(list_of_dates)
     table_data.append([])
     count = 0
     # for x in list_of_dates:

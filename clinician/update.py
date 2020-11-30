@@ -46,7 +46,7 @@ def valid_date_checker():
 
 
 def current_events(service, calander_id):
-    event = service.events().get(calendarId='primary', eventId=calander_id).execute()
+    event = service.events().get(calendarId='teamtwotesting@gmail.com', eventId=calander_id).execute()
 
     return event
 
@@ -94,7 +94,7 @@ def update_event(service, calander_id):
         event[i] = input(f"Please provide a new \"{i.capitalize()}\": ")
 
     try:
-        updated_event = service.events().update(calendarId='primary', eventId=event['id'], body=event, maxAttendees=2, sendUpdates='all', sendNotifications=True, alwaysIncludeEmail=True).execute()
+        updated_event = service.events().update(calendarId='teamtwotesting@gmail.com', eventId=event['id'], body=event, maxAttendees=2, sendUpdates='all', sendNotifications=True, alwaysIncludeEmail=True).execute()
         print("Your event has been updated")
     except:
         print("No event with that name was found")

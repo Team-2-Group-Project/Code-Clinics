@@ -1,5 +1,5 @@
 def current_events(service, calander_id):
-    event = service.events().get(calendarId='primary', eventId=calander_id).execute()
+    event = service.events().get(calendarId='teamtwotesting@gmail.com', eventId=calander_id).execute()
 
     return event
 
@@ -21,7 +21,7 @@ def delete_event(service, calander_id, user_name):
         count += 1
 
     try:
-        updated_event = service.events().update(calendarId='primary', eventId=event['id'], body=event, maxAttendees=2, sendUpdates='all', sendNotifications=True, alwaysIncludeEmail=True).execute()
+        updated_event = service.events().update(calendarId='teamtwotesting@gmail.com', eventId=event['id'], body=event, maxAttendees=2, sendUpdates='all', sendNotifications=True, alwaysIncludeEmail=True).execute()
         print("You have been removed")
     except:
         print("No event with that name was found")

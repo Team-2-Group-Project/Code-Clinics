@@ -50,7 +50,7 @@ def determine_and_set_table_height(dict,temp_list):
     list_of_dates = []
     for x in dict:
         list_of_dates.append(x['start']['dateTime'][:-15])
-    most_common = statistics.mode(list_of_dates)
+    # most_common = statistics.mode(list_of_dates)
     table_data.append([])
     count = 0
     # for x in list_of_dates:
@@ -101,4 +101,10 @@ def generate_table(i,dict):
     table.inner_row_border = True
     table.padding_left = 0
     table.padding_right = 0
-    print(table.table)
+    print(table.table)    # f = open('user_info.json', 'r')
+    # contents = f.read()
+    # user_info = ast.literal_eval(contents)
+    # print(user_info)
+    # f.close()
+        # if f["user"]
+        # json.dump(user_check, f)
