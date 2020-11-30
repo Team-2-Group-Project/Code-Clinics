@@ -1,7 +1,9 @@
+#!/usr/bin/env python
 from __future__ import print_function
 import datetime
 import pickle
 import os.path
+import sys
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -16,9 +18,10 @@ from clinician import update as c_update
 from patient import insert as p_insert
 # from patient import update as p_update
 from patient import delete as p_delete
+# import ast
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar']
-valid_action = ["create", "update","meeting list","delete","exit","join"]
+valid_action = ["create", "update","meeting list","delete","exit","join","logout",'help']
 
 
 def creating_service():
@@ -45,10 +48,10 @@ def creating_service():
             pickle.dump(creds, token)
     service = build('calendar', 'v3', credentials=creds)
     return service
-print(("\033[1;32mWelcome to Code Clinic!\033[0m"))
 
 
-def user_name():
+
+def user_name_func():
     '''
     Asking for the username, therfore it can connect to their email address
     '''
@@ -61,7 +64,16 @@ def which_role(user_name):
     role = input(f"Hello {user_name}, are you a Clinician (C) or a Patient (P)? ")
     while role.lower() not in possible_roles:
         role = input(f"Please state if you are a Clinician (C) or a Patient (P)? ")
-    return role.lower()
+    # return role.lower()
+    with open('.user_info.json') as f:
+        data = json.load(f)
+    if role == data['role']:
+        return role.lower()
+    else:
+        data['role'] = role.lower()
+        with open('.user_info.json', 'w+') as f:
+            json.dump(data, f)
+        return role.lower()
 
 
 def what_would():
@@ -83,7 +95,7 @@ def valid_command(action):
         return True
     else: 
         return False
-    
+
 
 def call_calendar(events, calendar):
     try:
@@ -91,7 +103,8 @@ def call_calendar(events, calendar):
         calendar.table_data = []
     except:
         print("You have no meetings in your calendar")
-    
+
+
 def handle_command(action, service, user_name, role):
     '''
     Creating conditions that will take the users input
@@ -99,13 +112,17 @@ def handle_command(action, service, user_name, role):
     '''
     calendar = c_calendar if role == "c" else p_calendar
     if action not in valid_action: 
-        action = what_would()
+        print("Invalid command")
+        sys.exit()
     if role == 'c' or role == 'clinician':
-        #print(help_doctor())
+        # print(help_doctor())
+        if action == 'help':
+            help_doctor()
         if action == "create":
             events = create_calendar_events(service, 7)
             calendar.generate_table(8,events)
-            c_insert.insert_event(service, user_name, calendar.table_data)
+            # calendar.print_table(8, events)
+            c_insert.insert_event(service, user_name, calendar.table_data, events, calendar.full_time_list)
             calendar.table_data = []
         elif action == "update":
             events = create_calendar_events(service, 7)
@@ -117,15 +134,24 @@ def handle_command(action, service, user_name, role):
             calendar.print_table(8, events)
             # meetings_lists(events)
         elif action == "delete":
+            # events = create_calendar_events(service, 7)
+            # call_calendar(events, calendar)
+            # calander_id = meetings_lists(events)
             events = create_calendar_events(service, 7)
-            call_calendar(events, calendar)
-            calander_id = meetings_lists(events)
-            c_delete.delete_event(service, calander_id)
+            calendar.print_table(8, events)
+            calendar.generate_table(8,events)
+            c_delete.delete_event(service, user_name, calendar.table_data, events, calendar.full_time_list)
+            calendar.table_data = []
         elif action == "exit":
             print("Thank you for using code clinic")
             return False
+        # elif action == "logout":
+        #     logout()
+        #     return False
     if role == 'p' or role == 'patient':
         # print(help_patient())
+        if action == 'help':
+            help_patient()
         if action == "join":
             events = create_calendar_events(service, 7)
             call_calendar(events, calendar)
@@ -148,7 +174,16 @@ def handle_command(action, service, user_name, role):
         elif action == "exit":
             print("Thank you for using code clinic")
             return False
+        # elif action == "logout":
+        #     logout()
+        #     return False
     return True
+
+
+def arguments():
+    arg = sys.argv
+    arg = ' '.join(arg[1:])
+    return arg
 
 
 def create_calendar_events(service, future_date):
@@ -198,8 +233,47 @@ meeting list - Displays your Google Calendar events for the next 7 days
 delete - Delete an event
 exit - Exits the Code Clinic program
 ''') 
-    
-    
+
+
+def logout():
+    with open('.user_info.json', 'r+') as f:
+        data = json.load(f)
+    data['user'] = ''
+    data['role'] = ''
+    with open('.user_info.json', 'w+') as f:
+        json.dump(data, f)
+    try:
+        os.remove('token.pickle')
+    except:
+        pass 
+
+
+def log_in_checker():
+    user_name = ''
+    with open('.user_info.json', 'r+') as f:
+        data = json.load(f)
+    # if not data['user'] == '':
+    if data['user'] == '':
+        user_name = user_name_func()
+        creating_service()
+        data['user'] = user_name
+        with open('.user_info.json', 'w+') as f:
+            json.dump(data, f)
+    # else:
+    #     os.remove('token.pickle')
+    #     creating_service()
+    #     # data['user'] = user_name
+    #     with open('.user_info.json', 'w+') as f:
+    #         json.dump(data, f)
+    #     return
+    if data['role'] == '':
+        role = which_role(data['user'])
+    else:
+        role = data['role']
+    return data['user'],role
+        
+
+
 def help_patient():
     print('''
 \033[1;32;4mAvailable Commands:\033[0m    
@@ -208,10 +282,19 @@ meeting list - Displaying the users Google Calendar events
 delete - Remove yourself from a slot
 exit - Exits the code clinic program
 ''')
+
+
 if __name__ == '__main__':
-    user_name = user_name()
-    role = which_role(user_name)
-    action = what_would()
+    # user_name = user_name()
+    # role = which_role(user_name)
+    action = arguments()
+    if action == 'logout':
+        print(("\033[1;32mLogging Out\033[0m"))
+        logout()
+        sys.exit()
+    else: 
+        print(("\033[1;32mWelcome to Code Clinic!\033[0m"))
+    user_name,role = log_in_checker()
     service = creating_service()
-    while handle_command(action, service, user_name, role):
-        action = what_would()
+    # role  = "c"
+    handle_command(action, service, user_name, role)
