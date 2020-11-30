@@ -300,8 +300,6 @@ exit - Exits the code clinic program
 if __name__ == '__main__':
     # user_name = user_name()
     # role = which_role(user_name)
-    print(datetime.datetime.now() + datetime.timedelta(hours=8))
-    # now = datetime.datetime.now()
     action = arguments()
     if action == 'logout':
         print(("\033[1;32mLogging out\033[0m"))
