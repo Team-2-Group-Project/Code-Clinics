@@ -10,15 +10,15 @@ from clinic_calendars import patient_calendar, clinician_calendar
 def valid_action():
     return ["create", "update","meeting list","delete","exit","join","logout",'help']
 
-
+# This function calls its self and is not called anywhere else? what is this for?
 def what_would():
     '''
     Storing the users response to the function it wants to perform
     '''
     if role == 'c' or role == 'clinician':
-        help_doctor()
+        help_func("c")
     else:
-        help_patient()
+        help_func("p")
     action = input(f"What would you like to do: ")
     if valid_command(action) == False:
         action = what_would()
@@ -26,6 +26,9 @@ def what_would():
 
 
 def valid_command(action):
+    """
+    This function checks to make sure that the action from the user is valid and correct
+    """
     if action in valid_action():
         return True
     else: 
@@ -33,6 +36,10 @@ def valid_command(action):
 
 
 def call_calendar(events, calendar):
+    """
+    This function calls the calendar if the user has meetings in it \
+        to print and generate it
+    """
     try:
         calendar.generate_table(8,events)
         calendar.table_data = []
@@ -51,11 +58,12 @@ def handle_command(action, service, user_name, role):
         sys.exit()
     if role == 'c' or role == 'clinician':
         if action == 'help':
-            help_doctor()
+            help_func("c")
         if action == "create":
             events = event_maker.get_user_events(service, 7)
             calendar.generate_table(8,events)
-            create.insert_event(service, user_name, calendar.table_data, events, calendar.full_time_list)
+            create.insert_event(service, user_name, calendar.table_data, \
+                events, calendar.full_time_list)
             calendar.table_data = []
         elif action == "update":
             events = event_maker.get_user_events(service, 7)
@@ -69,14 +77,15 @@ def handle_command(action, service, user_name, role):
             events = event_maker.get_user_events(service, 7)
             calendar.print_table(8, events)
             calendar.generate_table(8,events)
-            cancel.delete_event(service, user_name, calendar.table_data, events, calendar.full_time_list)
+            cancel.delete_event(service, user_name, calendar.table_data, \
+                events, calendar.full_time_list)
             calendar.table_data = []
         elif action == "exit":
             print("Thank you for using code clinic")
             return False
     if role == 'p' or role == 'patient':
         if action == 'help':
-            help_patient()
+            help_func("p")
         if action == "join":
             events = event_maker.get_user_events(service, 7)
             call_calendar(events, calendar)
@@ -107,8 +116,13 @@ def arguments():
 
 
 def meetings_lists(events):
+    """
+    This function is used to find and isolate an individual meeting slot \
+        and then return that sepcific meetings ID
+    """
     which_meeting = input("Meeting name?: ")
-    meetings = [item for item in events if item["summary"].lower() == which_meeting.lower()]
+    meetings = [item for item in events if \
+        item["summary"].lower() == which_meeting.lower()]
     if not meetings:
         print('No upcoming meetings found.')
     for meet in meetings:
@@ -126,28 +140,33 @@ def meetings_lists(events):
     return calander_id
 
 
-def help_doctor():
-    print('''
-\033[1;32;4mAvailable Commands:\033[0m
-create - Creating a new event
-update - Update an existing event
-meeting list - Displays your Google Calendar events for the next 7 days
-delete - Delete an event
-exit - Exits the Code Clinic program
-''') 
+def help_func(role):
+    """
+    Prints out the Help for the users to see what they can do, depending on their role
+    """
+    if role == "c":
+        print('''
+            \033[1;32;4mAvailable Commands:\033[0m\
+            \ncreate - Creating a new event\
+            \nupdate - Update an existing event\
+            \nmeeting list - Displays your Google Calendar events for the next 7 days\
+            \ndelete - Delete an event\
+            \nexit - Exits the Code Clinic program\
+            ''') 
+    elif role == "p":
+        print('''\n\033[1;32;4mAvailable Commands:\033[0m\n\
+            \njoin - Select an event that is available\
+            \nmeeting list - Displaying the users Google Calendar events\
+            \ndelete - Remove yourself from a slot\
+            \nexit - Exits the code clinic program\
+            ''')
+    return
 
 
-def help_patient():
-    print('''
-\033[1;32;4mAvailable Commands:\033[0m    
-join - Select an event that is available
-meeting list - Displaying the users Google Calendar events
-delete - Remove yourself from a slot
-exit - Exits the code clinic program
-''')
-
-
-if __name__ == '__main__':
+def main():
+    """
+    This is the main function where everything is first called and processed
+    """
     action = arguments()
     print(action)
     if action == 'logout':
@@ -159,3 +178,7 @@ if __name__ == '__main__':
     user_name,role = login.log_in_checker()
     service = serives_maker.creating_service()
     handle_command(action, service, user_name, role)
+
+
+if __name__ == '__main__':
+    main()
