@@ -148,11 +148,21 @@ def help_func(role):
             ''')
     return
 
+def for_byron(service):
+    tttevent = event_maker.get_code_clinic_events(service, 7)
+    primaryevent = event_maker.get_user_events(service, 7)
+
+    print("tttevent: ", tttevent)
+    print("primaryevent: ", primaryevent)
+
+
 
 def main():
     """
     This is the main function where everything is first called and processed
     """
+
+
     action = arguments()
     print(action)
     if action == 'logout':
@@ -163,6 +173,7 @@ def main():
         print(("\033[1;32mWelcome to Code Clinic!\033[0m"))
     user_name,role = login.log_in_checker()
     service = serives_maker.creating_service()
+    for_byron(service)
     handle_command(action, service, user_name, role)
 
 

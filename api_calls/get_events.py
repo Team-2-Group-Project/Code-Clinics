@@ -13,7 +13,7 @@ def get_code_clinic_events(service, future_date):
                                           timeMax=a_week, singleEvents=True,
                                           orderBy='startTime').execute()
     events = events_result.get('items', [])
-    with open('.calendar.json', 'w+') as f:
+    with open('.calendar_ttt.json', 'w+') as f:
         json.dump(events, f)
     return events
 
