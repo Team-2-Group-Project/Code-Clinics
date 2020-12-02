@@ -1,0 +1,23 @@
+dr 
+------------------------------------------------------------
+python3 app.py book "msegal" "2020-11-11" "15:00"
+python3 app.py book "msegal" "ID OF EVENT"
+
+python3 app.py create "summary" "description" "date" "time"
+
+python3 app.py update "ID" "summary" "description" "date" "time"
+
+python3 app.py cancel "username" "ID"
+----------------------------------------------------------------------
+
+patient
+--------------------------------------------------------------
+python3 app.py join "dr_username" "id_of_session" "description"
+
+python3 app.py leave "dr_username" "id_of_session"
+
+python3 app.py update "description, what need help"
+--------------------------------------------------------------
+
+python3 app.py "booking calendar" - patient
+python3 app.py "volunteering calendar" - dr

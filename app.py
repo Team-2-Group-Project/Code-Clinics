@@ -10,20 +10,6 @@ from clinic_calendars import patient_calendar, clinician_calendar
 def valid_action():
     return ["create", "update","meeting list","delete","exit","join","logout",'help']
 
-# This function calls its self and is not called anywhere else? what is this for?
-def what_would():
-    '''
-    Storing the users response to the function it wants to perform
-    '''
-    if role == 'c' or role == 'clinician':
-        help_func("c")
-    else:
-        help_func("p")
-    action = input(f"What would you like to do: ")
-    if valid_command(action) == False:
-        action = what_would()
-    return action.lower()
-
 
 def valid_command(action):
     """
