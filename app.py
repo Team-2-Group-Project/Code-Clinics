@@ -44,7 +44,7 @@ def handle_command(action, service, user_name, role):
         sys.exit()
     if role == 'c' or role == 'clinician':
         if action == 'help':
-            help_func("c")
+            help_func()
         if action == "create":
             events = event_maker.get_user_events(service, 7)
             calendar.generate_table(8,events)
@@ -71,7 +71,7 @@ def handle_command(action, service, user_name, role):
             return False
     if role == 'p' or role == 'patient':
         if action == 'help':
-            help_func("p")
+            help_func()
         if action == "join":
             events = event_maker.get_user_events(service, 7)
             call_calendar(events, calendar)
@@ -133,7 +133,7 @@ def for_byron(service):
     print("tttevent: ", tttevent)
     print("primaryevent: ", primaryevent)
 
-def help_func():
+def ():
     """
     Prints out the Help for the users to see what they can do, depending on their role
     """
@@ -177,22 +177,20 @@ def main():
     """
     This is the main function where everything is first called and processed
     """
-    help_func()
 
-    # action = arguments()
-    # print(action)
-    # if action == 'logout':
-    #     print(("\033[1;32mLogging out\033[0m"))
-    #     logout.logout()
-    #     sys.exit()
-    # else:
-    #     print(("\033[1;32mWelcome to Code Clinic!\033[0m"))
-    # user_name,role = login.log_in_checker()
-    # service = serives_maker.creating_service()
-    # for_byron(service)
-    # handle_command(action, service, user_name, role)
+    action = arguments()
+    print(action)
+    if action == 'logout':
+        print(("\033[1;32mLogging out\033[0m"))
+        logout.logout()
+        sys.exit()
+    else:
+        print(("\033[1;32mWelcome to Code Clinic!\033[0m"))
+    user_name,role = login.log_in_checker()
+    service = serives_maker.creating_service()
+    for_byron(service)
+    handle_command(action, service, user_name, role)
 
 
 if __name__ == '__main__':
-    # main()
-    help_func()
+    main()
