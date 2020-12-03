@@ -126,28 +126,6 @@ def meetings_lists(events):
     return calander_id
 
 
-def help_func(role):
-    """
-    Prints out the Help for the users to see what they can do, depending on their role
-    """
-    if role == "c":
-        print('''
-            \033[1;32;4mAvailable Commands:\033[0m\
-            \ncreate - Creating a new event\
-            \nupdate - Update an existing event\
-            \nmeeting list - Displays your Google Calendar events for the next 7 days\
-            \ndelete - Delete an event\
-            \nexit - Exits the Code Clinic program\
-            ''') 
-    elif role == "p":
-        print('''\n\033[1;32;4mAvailable Commands:\033[0m\n\
-            \njoin - Select an event that is available\
-            \nmeeting list - Displaying the users Google Calendar events\
-            \ndelete - Remove yourself from a slot\
-            \nexit - Exits the code clinic program\
-            ''')
-    return
-
 def for_byron(service):
     tttevent = event_maker.get_code_clinic_events(service, 7)
     primaryevent = event_maker.get_user_events(service, 7)
@@ -155,27 +133,66 @@ def for_byron(service):
     print("tttevent: ", tttevent)
     print("primaryevent: ", primaryevent)
 
-
+def help_func():
+    """
+    Prints out the Help for the users to see what they can do, depending on their role
+    """
+    helped = """
+        These are the code-clinics commands that can be used in various situations:\n\
+        Please copy and paste the code in '<>' to call the functions:\n\
+        \nlogging in and out:\n\
+        login              Creates a log in session with you as the user\n\
+            <python3 app.py login "username">\n\n\
+        logout             logs you out of the code clinics calendar\n\
+            <python3 app.py logout>\n\
+        \n\
+        \nVolunteering commands:\n\
+        create                   Create a slot (of 3x30 minutes), to host a code-clinic\n\
+            <python3 app.py create "summary" "description" "date" "time">\n\n\
+        update                   Update an existing slots description/summary\n\
+            <python3 app.py update "id" "summary" "description"\n\n\
+        delete                   Delete a users sessions (of 3x30 minutes) code clinics\n\
+            <python3 app.py delete "id">
+        \n\
+        \n\
+        \nBooking commands:\n\
+        join                      Join a code clinic slot (of 1x30 minutes) with a host\n\
+            <python3 app.py join "host_username" "id_of_session" "description">\n\n\
+        leave                     Leave a session that you are apart of\n\
+            <python3 app.py leave "host_username" "id_of_session">\n\n\
+        update                    Update the description with what you need help with\n\
+            <python3 app.py update "host_username" "id_of_session" "description"\n\
+        \n\
+        \nCalendar commands:\n\
+        volunteering_calendar     See the preview of the volunteering calendar as well as which slots are available\n\
+            <python3 app.py "volunteering_calendar">\n\n\
+        booking_calendar          See the preview of the booking calendar as well as which slots are available\n\
+            <python3 app.py "booking_calendar">\n\n\
+        
+    """
+    print(helped)
+    return helped
 
 def main():
     """
     This is the main function where everything is first called and processed
     """
+    help_func()
 
-
-    action = arguments()
-    print(action)
-    if action == 'logout':
-        print(("\033[1;32mLogging out\033[0m"))
-        logout.logout()
-        sys.exit()
-    else:
-        print(("\033[1;32mWelcome to Code Clinic!\033[0m"))
-    user_name,role = login.log_in_checker()
-    service = serives_maker.creating_service()
-    for_byron(service)
-    handle_command(action, service, user_name, role)
+    # action = arguments()
+    # print(action)
+    # if action == 'logout':
+    #     print(("\033[1;32mLogging out\033[0m"))
+    #     logout.logout()
+    #     sys.exit()
+    # else:
+    #     print(("\033[1;32mWelcome to Code Clinic!\033[0m"))
+    # user_name,role = login.log_in_checker()
+    # service = serives_maker.creating_service()
+    # for_byron(service)
+    # handle_command(action, service, user_name, role)
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    help_func()
