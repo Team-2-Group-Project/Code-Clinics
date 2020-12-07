@@ -5,6 +5,28 @@ from terminaltables import AsciiTable
 import json
 table_data = []
 
+def check_if_attendee(username,dict):
+    email_list = []
+    for x in dict:
+        indiv_email_list = []
+        for y in x['attendees']:
+            indiv_email_list.append(y['email'])
+        email_list.append(indiv_email_list)
+    print(email_list)
+    count = 0
+    print(len(dict))
+    for x in email_list:
+        if not (username + '@student.wethinkcode.co.za') in x:
+            print(username)
+            print(x)
+            dict.pop(count)
+        count = count + 1
+    print(len(dict))
+
+    return dict
+
+
+
 def list_of_times():
     time_list = []
     time = datetime.datetime(year=2020,month=12,day=1,hour=7,minute=30)
@@ -14,6 +36,24 @@ def list_of_times():
         table_data[i+1][0] = time_list[i]
     print(time_list)
     return time_list
+
+def creating_slot_clinic(username,dict):
+    email_list = []
+    for y in dict['attendees']:
+        email_list.append(y['email'])
+    for x in email_list:
+        if (username + '@student.wethinkcode.co.za') in x:
+            raise Exception('')
+    try:
+        string = 'Title: ' + dict['summary']
+    except:
+        string = 'Title: None'
+    string = string + '\nCreator: ' + dict['creator']['email']
+    time_string = dict['start']['dateTime'][:-9]
+    time_string = time_string[11:]
+    command_string = '\nCommand:\n' + 'app join ' + dict['id']  
+    return (string + '\nTime: ' + time_string + command_string)
+    
 
 
 def creating_slot(dict):
@@ -71,7 +111,7 @@ def assigning_row_col_num_to_dict(dict,max):
             count = 0
     return dict
 
-def writing_to_table(dict,rows, list_week, list_of_dates,max,time_list):
+def writing_to_table_personal(dict,rows, list_week, list_of_dates,max,time_list):
     global table_data
     count = 1
     for x in dict:
@@ -85,8 +125,23 @@ def writing_to_table(dict,rows, list_week, list_of_dates,max,time_list):
             pass
         count = count + 1
 
-def generate_table(i,dict):
+def writing_to_table_clinic(dict,rows, list_week, time_list):
     global table_data
+    count = 1
+    for x in dict:
+        try:
+            index = list_week.index(x['start']['dateTime'][:-15])
+            time_string = x['start']['dateTime'][:-9]
+            time_string = time_string[11:]
+            index2 = time_list.index(time_string)
+            table_data[index2+1][index+1] = creating_slot_clinic(x)
+        except:
+            pass
+        count = count + 1
+
+def generate_table(i,dict,code_clinic):
+    global table_data
+    dict = check_if_attendee('msegal',dict)
     list_week = creating_list_of_week(i,datetime.date.today())
     temp_list = generate_list_of_empty_strings(i)
     try:
@@ -96,7 +151,8 @@ def generate_table(i,dict):
     generate_days(i,count,list_week)
     time_list = list_of_times()
     dict = assigning_row_col_num_to_dict(dict,count)
-    writing_to_table(dict,count,list_week,list_of_dates,count,time_list)
+    writing_to_table_clinic(code_clinic,rows, list_week, time_list)
+    writing_to_table_personal(dict,count,list_week,list_of_dates,count,time_list)
     table = terminaltables.SingleTable(table_data)
     table.inner_row_border = True
     table.padding_left = 0
