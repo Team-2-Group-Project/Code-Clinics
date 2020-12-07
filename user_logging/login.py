@@ -39,7 +39,7 @@ def log_in_checker():
         data['expire'] = data['expire'].strftime("%Y/%m/%d, %H:%M:%S")
         with open('.user_info.json', 'w+') as f:
             json.dump(data, f)
-    if datetime.datetime.strptime(data['expire'],'%Y/%m/%d, %H:%M:%S') > datetime.datetime.now():
+    elif datetime.datetime.strptime(data['expire'],'%Y/%m/%d, %H:%M:%S') > datetime.datetime.now():
         return data['user'],data['role']
     else:
         data['user'] = ''
