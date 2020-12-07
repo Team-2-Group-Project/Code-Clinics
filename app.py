@@ -46,10 +46,13 @@ def handle_command(action, service, user_name, role):
         if action == 'help':
             help_func()
         if action == "create":
-            events = event_maker.get_user_events(service, 7)
-            calendar.generate_table(8,events)
-            create.insert_event(service, user_name, calendar.table_data, \
-                events, calendar.full_time_list)
+            tttevent = event_maker.get_code_clinic_events(service, 7)
+            primaryevent = event_maker.get_user_events(service, 7)
+            calendar.generate_table(8,tttevent)
+            calendar.generate_table(8,primaryevent)
+            create.insert_details(service, user_name, tttevent, primaryevent)
+            # create.insert_event(service, user_name, calendar.table_data, \
+                # events, calendar.full_time_list)
             calendar.table_data = []
         elif action == "update":
             events = event_maker.get_user_events(service, 7)
@@ -130,10 +133,7 @@ def for_byron(service):
     tttevent = event_maker.get_code_clinic_events(service, 7)
     primaryevent = event_maker.get_user_events(service, 7)
 
-    print("tttevent: ", tttevent)
-    print("primaryevent: ", primaryevent)
-
-def ():
+def help_func():
     """
     Prints out the Help for the users to see what they can do, depending on their role
     """
