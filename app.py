@@ -21,13 +21,13 @@ def valid_command(action):
         return False
 
 
-def call_calendar(events, calendar):
+def call_calendar(events, calendar,service,user_name):
     """
     This function calls the calendar if the user has meetings in it \
         to print and generate it
     """
     try:
-        calendar.generate_table(8,events)
+        calendar.generate_table(8,events, for_byron(service),user_name)
         calendar.table_data = []
     except:
         print("You have no meetings in your calendar")
@@ -74,19 +74,19 @@ def handle_command(action, service, user_name, role):
             help_func()
         if action == "join":
             events = event_maker.get_user_events(service, 7)
-            call_calendar(events, calendar)
+            call_calendar(events, calendar,service,user_name)
             calander_id = meetings_lists(events)
             book.insert_patient(service, calander_id, user_name)
         elif action == "update":
             events = event_maker.get_user_events(service, 7)
-            call_calendar(events, calendar)
+            call_calendar(events, calendar,service,user_name)
             calander_id = meetings_lists(events)
         elif action == "meeting list":
             events = event_maker.get_user_events(service, 7)
-            call_calendar(events, calendar)
+            call_calendar(events, calendar,service,user_name)
         elif action == "delete":
             events = event_maker.get_user_events(service, 7)
-            call_calendar(events, calendar)
+            call_calendar(events, calendar,service,user_name)
             calander_id = meetings_lists(events)
             leave.delete_event(service, calander_id, user_name)
         elif action == "exit":
@@ -130,10 +130,10 @@ def for_byron(service):
     tttevent = event_maker.get_code_clinic_events(service, 7)
     primaryevent = event_maker.get_user_events(service, 7)
 
-    print("tttevent: ", tttevent)
-    print("primaryevent: ", primaryevent)
+    return tttevent
+   
 
-def ():
+def help_func():
     """
     Prints out the Help for the users to see what they can do, depending on their role
     """
