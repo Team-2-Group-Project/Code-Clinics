@@ -125,7 +125,7 @@ def writing_to_table_personal(dict,rows, list_week, list_of_dates,max,time_list)
             pass
         count = count + 1
 
-def writing_to_table_clinic(dict,rows, list_week, time_list):
+def writing_to_table_clinic(dict, list_week, time_list,username):
     global table_data
     count = 1
     for x in dict:
@@ -134,14 +134,14 @@ def writing_to_table_clinic(dict,rows, list_week, time_list):
             time_string = x['start']['dateTime'][:-9]
             time_string = time_string[11:]
             index2 = time_list.index(time_string)
-            table_data[index2+1][index+1] = creating_slot_clinic(x)
+            table_data[index2+1][index+1] = creating_slot_clinic(username,x)
         except:
             pass
         count = count + 1
 
-def generate_table(i,dict,code_clinic):
+def generate_table(i,dict,code_clinic,username):
     global table_data
-    dict = check_if_attendee('msegal',dict)
+    dict = check_if_attendee(username,dict)
     list_week = creating_list_of_week(i,datetime.date.today())
     temp_list = generate_list_of_empty_strings(i)
     try:
@@ -151,7 +151,7 @@ def generate_table(i,dict,code_clinic):
     generate_days(i,count,list_week)
     time_list = list_of_times()
     dict = assigning_row_col_num_to_dict(dict,count)
-    writing_to_table_clinic(code_clinic,rows, list_week, time_list)
+    writing_to_table_clinic(code_clinic, list_week, time_list,username)
     writing_to_table_personal(dict,count,list_week,list_of_dates,count,time_list)
     table = terminaltables.SingleTable(table_data)
     table.inner_row_border = True
