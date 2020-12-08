@@ -39,7 +39,7 @@ def handle_command(action, service, user_name, role):
     , then performing the requested action
     '''
     calendar = clinician_calendar if role == "c" else patient_calendar
-    if action not in valid_action(): 
+    if action not in valid_action() and not 'join' in action: 
         print("Invalid command")
         sys.exit()
     if role == 'c' or role == 'clinician':
@@ -72,11 +72,11 @@ def handle_command(action, service, user_name, role):
     if role == 'p' or role == 'patient':
         if action == 'help':
             help_func()
-        if action == "join":
+        if 'join' in action:
             events = event_maker.get_user_events(service, 7)
             call_calendar(events, calendar,service,user_name)
-            calander_id = meetings_lists(events)
-            book.insert_patient(service, calander_id, user_name)
+            #calander_id = meetings_lists(events)
+            book.insert_patient(service, action.split()[1], user_name)
         elif action == "update":
             events = event_maker.get_user_events(service, 7)
             call_calendar(events, calendar,service,user_name)
