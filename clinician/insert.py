@@ -219,18 +219,6 @@ def insert_details(service, user_name, tttevent, primaryevent):
         creator_names.append(name[0])
 
 
-
+    print("creator_names: ", creator_names)
     slots = [tttevent[num]['start']['dateTime'] for num, user in enumerate(creator_names) if creator_names[num] == user_name]
     print(slots)
-    # for i in range(len(creator_names)) if creator_names[i] == user_name:
-        # print("bob")
-
-    # for i in range(len(creator_names)):
-        # if creator_names[i] == user_name:
-            # print("yay")
-            # for j in range(len(tttevent)):
-                # print(j)
-                # print(creator_names)
-                # start_times.append(tttevent[i]['start']['dateTime'])
-        # else:
-            # print("nay")
