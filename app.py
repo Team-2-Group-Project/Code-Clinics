@@ -8,7 +8,7 @@ from clinic_calendars import patient_calendar, clinician_calendar
 
 
 def valid_action():
-    return ["create", "update","meeting list","delete","exit","join","logout",'help']
+    return ["create", "cancel", "update", "meeting_list","join", "leave","logout",'help']
 
 
 def valid_command(action):
@@ -27,72 +27,119 @@ def call_calendar(events, calendar,service,user_name):
         to print and generate it
     """
     try:
-        calendar.generate_table(8,events, for_byron(service),user_name)
+        calendar.generate_table(8,events, fetch_calendar(service),user_name)
         calendar.table_data = []
     except:
         print("You have no meetings in your calendar")
 
 
-def handle_command(action, service, user_name, role):
+def handle_command(command, command_params, service, user_name, role):
     '''
     Creating conditions that will take the users input
     , then performing the requested action
     '''
+    #THIS LINE IS TO BE DELETED ONCE WE REMOVE ROLES
     calendar = clinician_calendar if role == "c" else patient_calendar
-    if action not in valid_action() and not 'join' in action: 
-        print("Invalid command")
-        sys.exit()
-    if role == 'c' or role == 'clinician':
-        if action == 'help':
-            help_func()
-        if action == "create":
-            events = event_maker.get_user_events(service, 7)
-            calendar.generate_table(8,events)
-            create.insert_event(service, user_name, calendar.table_data, \
-                events, calendar.full_time_list)
-            calendar.table_data = []
-        elif action == "update":
-            events = event_maker.get_user_events(service, 7)
-            call_calendar(events, calendar)
-            calander_id = meetings_lists(events)
-            update.update_event(service, calander_id)
-        elif action == "meeting list":
-            events = event_maker.get_user_events(service, 7)
-            calendar.print_table(8, events)
-        elif action == "delete":
-            events = event_maker.get_user_events(service, 7)
-            calendar.print_table(8, events)
-            calendar.generate_table(8,events)
-            cancel.delete_event(service, user_name, calendar.table_data, \
-                events, calendar.full_time_list)
-            calendar.table_data = []
-        elif action == "exit":
-            print("Thank you for using code clinic")
-            return False
-    if role == 'p' or role == 'patient':
-        if action == 'help':
-            help_func()
-        if 'join' in action:
-            events = event_maker.get_user_events(service, 7)
-            call_calendar(events, calendar,service,user_name)
-            #calander_id = meetings_lists(events)
-            book.insert_patient(service, action.split()[1], user_name)
-        elif action == "update":
-            events = event_maker.get_user_events(service, 7)
-            call_calendar(events, calendar,service,user_name)
-            calander_id = meetings_lists(events)
-        elif action == "meeting list":
-            events = event_maker.get_user_events(service, 7)
-            call_calendar(events, calendar,service,user_name)
-        elif action == "delete":
-            events = event_maker.get_user_events(service, 7)
-            call_calendar(events, calendar,service,user_name)
-            calander_id = meetings_lists(events)
-            leave.delete_event(service, calander_id, user_name)
-        elif action == "exit":
-            print("Thank you for using code clinic")
-            return False
-    return True
+
+
+    if command == "help":
+        help_func()
+        return
+
+    print(command)
+    print(command_params)
+    print(service)
+    print(user_name)
+
+    if command == "create":
+        events = event_maker.get_user_events(service, 7)
+        calendar.generate_table(8,events)
+        create.insert_event(service, user_name, calendar.table_data, \
+            events, calendar.full_time_list)
+        calendar.table_data = []
+    elif command == "cancel":
+        events = event_maker.get_user_events(service, 7)
+        calendar.print_table(8, events)
+        calendar.generate_table(8,events)
+        cancel.delete_event(service, user_name, calendar.table_data, \
+            events, calendar.full_time_list)
+        calendar.table_data = []
+    elif command == "update":
+        events = event_maker.get_user_events(service, 7)
+        call_calendar(events, calendar,service,user_name)
+        calander_id = meetings_lists(events)
+        update.update_event(service, calander_id)
+    elif command == "meeting_list":
+        events = event_maker.get_user_events(service, 7)
+        calendar.print_table(8, events)
+    elif command == "join":
+        events = event_maker.get_user_events(service, 7)
+        call_calendar(events, calendar,service,user_name)
+        #calander_id = meetings_lists(events)
+        book.insert_patient(service, action.split()[1], user_name)
+    elif command == "leave":
+        events = event_maker.get_user_events(service, 7)
+        call_calendar(events, calendar,service,user_name)
+        calander_id = meetings_lists(events)
+        leave.delete_event(service, calander_id, user_name)
+    
+    return
+
+    # calendar = clinician_calendar if role == "c" else patient_calendar
+    # if action not in valid_action() and not 'join' in action: 
+    #     print("Invalid command")
+    #     sys.exit()
+    # if role == 'c' or role == 'clinician':
+    #     if action == 'help':
+    #         help_func()
+    #     if action == "create":
+    #         events = event_maker.get_user_events(service, 7)
+    #         calendar.generate_table(8,events)
+    #         create.insert_event(service, user_name, calendar.table_data, \
+    #             events, calendar.full_time_list)
+    #         calendar.table_data = []
+    #     elif action == "update":
+    #         events = event_maker.get_user_events(service, 7)
+    #         call_calendar(events, calendar)
+    #         calander_id = meetings_lists(events)
+    #         update.update_event(service, calander_id)
+    #     elif action == "meeting list":
+    #         events = event_maker.get_user_events(service, 7)
+    #         calendar.print_table(8, events)
+    #     elif action == "delete":
+    #         events = event_maker.get_user_events(service, 7)
+    #         calendar.print_table(8, events)
+    #         calendar.generate_table(8,events)
+    #         cancel.delete_event(service, user_name, calendar.table_data, \
+    #             events, calendar.full_time_list)
+    #         calendar.table_data = []
+    #     elif action == "exit":
+    #         print("Thank you for using code clinic")
+    #         return False
+    # if role == 'p' or role == 'patient':
+    #     if action == 'help':
+    #         help_func()
+    #     if 'join' in action:
+    #         events = event_maker.get_user_events(service, 7)
+    #         call_calendar(events, calendar,service,user_name)
+    #         #calander_id = meetings_lists(events)
+    #         book.insert_patient(service, action.split()[1], user_name)
+    #     elif action == "update":
+    #         events = event_maker.get_user_events(service, 7)
+    #         call_calendar(events, calendar,service,user_name)
+    #         calander_id = meetings_lists(events)
+    #     elif action == "meeting list":
+    #         events = event_maker.get_user_events(service, 7)
+    #         call_calendar(events, calendar,service,user_name)
+    #     elif action == "delete":
+    #         events = event_maker.get_user_events(service, 7)
+    #         call_calendar(events, calendar,service,user_name)
+    #         calander_id = meetings_lists(events)
+    #         leave.delete_event(service, calander_id, user_name)
+    #     elif action == "exit":
+    #         print("Thank you for using code clinic")
+    #         return False
+    # return True
 
 
 def arguments():
@@ -126,7 +173,7 @@ def meetings_lists(events):
     return calander_id
 
 
-def for_byron(service):
+def fetch_calendar(service):
     tttevent = event_maker.get_code_clinic_events(service, 7)
     primaryevent = event_maker.get_user_events(service, 7)
 
@@ -173,23 +220,51 @@ def help_func():
     print(helped)
     return helped
 
+
+def argument_validator(action):
+    """
+    Recievs the action from the user as a parameter, and then it splits them\
+        valids that it is a valid argument and the parameters are valid
+    :returns: command (being the valid action to take), lower case
+    :returns: all the params for the argument, lower case
+    """
+
+    actions = action.split(" ")
+    command = ""
+    params = ""
+    for comms in actions:
+        if comms in valid_action():
+            command = comms
+
+    if not command == "":
+        actions.pop(action.index(command))
+        params = list(map(lambda x: x.lower(), actions))
+    else:
+        print("no valid action found, please try again")
+        help_func()
+        return "", ""
+
+    return command.lower(), params
+
+
 def main():
     """
     This is the main function where everything is first called and processed
     """
 
     action = arguments()
-    print(action)
-    if action == 'logout':
+    command, command_params = argument_validator(action)
+    if command == "" and command_params == "":
+        return
+    if command == 'logout':
         print(("\033[1;32mLogging out\033[0m"))
         logout.logout()
         sys.exit()
-    else:
-        print(("\033[1;32mWelcome to Code Clinic!\033[0m"))
-    user_name,role = login.log_in_checker()
+    # else:
+    #     print(("\033[1;32mWelcome to Code Clinic!\033[0m"))
+    user_name, role = login.log_in_checker()
     service = serives_maker.creating_service()
-    for_byron(service)
-    handle_command(action, service, user_name, role)
+    handle_command(command, command_params, service, user_name, role)
 
 
 if __name__ == '__main__':

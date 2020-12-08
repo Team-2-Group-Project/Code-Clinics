@@ -115,12 +115,14 @@ def insertion_of_event(service, event):
         # print(e)
         print("A spooky thing happened. Please try again.")
 
+
 def creating_list_of_week(i,today_date):
     list_week = []
     for i in range(i):
         list_week.append(today_date + datetime.timedelta(days=i))
         list_week[i] = list_week[i].strftime('%Y-%m-%d')
     return list_week
+
 
 def insert_event(service, user_name, td, meetings, all_c_slots):
     meetings = [item for item in meetings if item["creator"]["email"].lower() == user_name+'@student.wethinkcode.co.za']
