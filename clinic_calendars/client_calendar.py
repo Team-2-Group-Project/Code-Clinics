@@ -58,7 +58,7 @@ def generate_days(i,r,list_week):
 
 def generate_list_of_empty_strings(i):
     temp_list = []
-    for x in range(i):
+    for x in range(i+1):
         temp_list.append('')
     return temp_list
 
@@ -97,7 +97,7 @@ def writing_to_table(dict,rows, list_week, list_of_dates,max,time_list):
             # time_string = x['start']['dateTime'][:-9]
             # time_string = time_string[11:]
             index2 = find_time(x)
-            table_data[index2][index+1] = '    ' + 'X'
+            table_data[index2][index+1] = '             ' + 'X'
             # '    ' + u'\N{check mark}'
         except:
             pass
@@ -106,21 +106,41 @@ def writing_to_table(dict,rows, list_week, list_of_dates,max,time_list):
 # def filling_up_table():
 
 
-def generate_table(i,dict):
+def writing_to_table_command(list_week):
+    global table_data
+    count1 = 0
+    while count1 <= 8:
+        count2 = 0
+        while count2 <= 8:
+            if table_data[count1][count2] == '':
+                string = 'Command:\napp create ' + list_week[count2 - 1] + ' ' + table_data[count1][0]
+                # print('First' + str(count1))
+                # print(count2)
+                table_data[count1][count2] = string
+            count2 = count2 + 1
+        count1 = count1 + 1
+    table_data[0][0] = ''
+
+
+
+def generate_table(i,dict,username):
     global table_data
     list_week = creating_list_of_week(i,datetime.date.today())
     temp_list = generate_list_of_empty_strings(i)
     count,list_of_dates = determine_and_set_table_height(dict,temp_list)
     generate_days(i,count,list_week)
     time_list = list_of_times()
-    dict = assigning_row_col_num_to_dict(dict,count)
+    # dict = assigning_row_col_num_to_dict(dict,count)
     writing_to_table(dict,count,list_week,list_of_dates,count,time_list)
+    writing_to_table_command(list_week)
+
     
 
-def print_table(i,events):
-    generate_table(i,events)
+def print_table(i,events,username):
+    generate_table(i,events,username)
     table = terminaltables.SingleTable(table_data)
     table.inner_row_border = True
     table.padding_left = 0
     table.padding_right = 0
+    print(table_data)
     print(table.table)
