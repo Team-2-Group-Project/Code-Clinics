@@ -12,16 +12,16 @@ def check_if_attendee(username,dict):
         for y in x['attendees']:
             indiv_email_list.append(y['email'])
         email_list.append(indiv_email_list)
-    print(email_list)
+    # print(email_list)
     count = 0
-    print(len(dict))
+    # print(len(dict))
     for x in email_list:
         if not (username + '@student.wethinkcode.co.za') in x:
-            print(username)
-            print(x)
+            # print(username)
+            # print(x)
             dict.pop(count)
         count = count + 1
-    print(len(dict))
+    # print(len(dict))
 
     return dict
 
@@ -34,7 +34,7 @@ def list_of_times():
         time = time + datetime.timedelta(minutes=30)
         time_list.append(time.strftime('%H:%M'))
         table_data[i+1][0] = time_list[i]
-    print(time_list)
+    # print(time_list)
     return time_list
 
 def creating_slot_clinic(username,dict):
@@ -141,7 +141,7 @@ def writing_to_table_clinic(dict, list_week, time_list,username):
 
 def generate_table(i,dict,code_clinic,username):
     global table_data
-    dict = check_if_attendee(username,dict)
+    # dict = check_if_attendee(username,dict)
     list_week = creating_list_of_week(i,datetime.date.today())
     temp_list = generate_list_of_empty_strings(i)
     try:
@@ -157,6 +157,7 @@ def generate_table(i,dict,code_clinic,username):
     table.inner_row_border = True
     table.padding_left = 0
     table.padding_right = 0
+    print(table_data)
     print(table.table)    # f = open('user_info.json', 'r')
     # contents = f.read()
     # user_info = ast.literal_eval(contents)
