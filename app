@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-import datetime, sys, json, os
+import datetime, sys, json, os, re
 from api_calls import serives_maker, event_maker
 from user_logging import login, logout
 from clinician import create, cancel, update
 from patient import book, leave
 from clinic_calendars import patient_calendar, clinician_calendar
-
+import clinician.freebusy as freebusy
 
 def valid_action():
     return ["create", "cancel", "update", "meeting_list","join", "leave","logout",'help']
@@ -34,7 +34,7 @@ def call_calendar(events, calendar,service,user_name):
 
 
 def handle_command(command, command_params, service, user_name, role):
-# def handle_command(action, service, user_name, role):
+    # def handle_command(action, service, user_name, role):
     '''
     Creating conditions that will take the users input
     , then performing the requested action
@@ -48,16 +48,17 @@ def handle_command(command, command_params, service, user_name, role):
         return
     #./app create 2020-12-09 08:00
     #./app cancel 'id-start-event'
-    print(command)
-    print(command_params)
-    print(service)
-    print(user_name)
+    # print(command)
+    # print(command_params)
+    # print(service)
+    # print(user_name)
 
     if command == "create":
         events = event_maker.get_user_events(service, 7)
         calendar.generate_table(8,events)
-        create.insert_event(service, user_name, calendar.table_data, \
-            events, calendar.full_time_list)
+        cc_events = event_maker.get_code_clinic_events(service, 7) 
+        us_events = event_maker.get_user_events(service, 7)
+        create.insert_event(command_params, service, user_name,calendar.table_data, calendar.full_time_list, cc_events, us_events)
         calendar.table_data = []
     elif command == "cancel":
         events = event_maker.get_user_events(service, 7)
@@ -146,7 +147,7 @@ def handle_command(command, command_params, service, user_name, role):
 
 def arguments():
     arg = sys.argv
-    arg = ' '.join(arg[1:])
+    arg = arg[1:]
     return arg
 
 
@@ -225,17 +226,16 @@ def argument_validator(action):
     :returns: command (being the valid action to take), lower case
     :returns: all the params for the argument, lower case
     """
-
-    actions = action.split(" ")
+    
     command = ""
     params = ""
-    for comms in actions:
+    for comms in action:
         if comms in valid_action():
             command = comms
 
     if not command == "":
-        actions.pop(action.index(command))
-        params = list(map(lambda x: x.lower(), actions))
+        action.pop(action.index(command))
+        params = list(map(lambda x: x.lower(), action))
     elif command in valid_action() and params == "":
         print("no valid parameteres found, plese try again")
         help_func()
@@ -271,3 +271,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # service = serives_maker.creating_service()
+    # freebusy.validate_douplicate_slots(service)
