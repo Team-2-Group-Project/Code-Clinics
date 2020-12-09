@@ -81,7 +81,7 @@ def generate_days(i,r,list_week):
 
 def generate_list_of_empty_strings(i):
     temp_list = []
-    for x in range(i):
+    for x in range(i+1):
         temp_list.append('')
     return temp_list
 
