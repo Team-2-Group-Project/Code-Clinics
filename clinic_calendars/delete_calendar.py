@@ -54,8 +54,8 @@ def creating_slot_clinic(username,dict):
     string = string + '\nCreator: ' + dict['creator']['email']
     time_string = dict['start']['dateTime'][:-9]
     time_string = time_string[11:]
-    command_string = '\nCommand:\n' + 'app delete ' + dict['id']  
-    return (string + '\nTime: ' + time_string + command_string)
+    command_string = '\nCommand:\n' + 'app cancel ' + dict['id']  
+    return (string + command_string)
     
 
 
@@ -84,7 +84,7 @@ def generate_days(i,r,list_week):
 
 def generate_list_of_empty_strings(i):
     temp_list = []
-    for x in range(i):
+    for x in range(i+1):
         temp_list.append('')
     return temp_list
 
@@ -144,7 +144,7 @@ def writing_to_table_clinic(dict, list_week, time_list,username):
 
 def generate_table(i,dict,username):
     global table_data
-    dict = check_if_attendee(username,dict)
+    # dict = check_if_attendee(username,dict)
     list_week = creating_list_of_week(i,datetime.date.today())
     temp_list = generate_list_of_empty_strings(i)
     try:
