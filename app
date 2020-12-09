@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-import datetime, sys, json, os
+import datetime, sys, json, os, re
 from api_calls import serives_maker, event_maker
 from user_logging import login, logout
 from clinician import create, cancel, update
 from patient import book, leave
 from clinic_calendars import patient_calendar, clinician_calendar
-
+import clinician.freebusy as freebusy
 
 def valid_action():
     return ["create", "cancel", "update", "meeting_list","join", "leave","logout",'help']
@@ -147,7 +147,7 @@ def handle_command(command, command_params, service, user_name, role):
 
 def arguments():
     arg = sys.argv
-    arg = ' '.join(arg[1:])
+    arg = arg[1:]
     return arg
 
 
@@ -226,17 +226,16 @@ def argument_validator(action):
     :returns: command (being the valid action to take), lower case
     :returns: all the params for the argument, lower case
     """
-
-    actions = action.split(" ")
+    
     command = ""
     params = ""
-    for comms in actions:
+    for comms in action:
         if comms in valid_action():
             command = comms
 
     if not command == "":
-        actions.pop(action.index(command))
-        params = list(map(lambda x: x.lower(), actions))
+        action.pop(action.index(command))
+        params = list(map(lambda x: x.lower(), action))
     elif command in valid_action() and params == "":
         print("no valid parameteres found, plese try again")
         help_func()
@@ -272,3 +271,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # service = serives_maker.creating_service()
+    # freebusy.validate_douplicate_slots(service)
