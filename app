@@ -34,7 +34,7 @@ def call_calendar(events, calendar,service,user_name):
 
 
 def handle_command(command, command_params, service, user_name, role):
-# def handle_command(action, service, user_name, role):
+    # def handle_command(action, service, user_name, role):
     '''
     Creating conditions that will take the users input
     , then performing the requested action
@@ -56,7 +56,9 @@ def handle_command(command, command_params, service, user_name, role):
     if command == "create":
         events = event_maker.get_user_events(service, 7)
         calendar.generate_table(8,events)
-        create.insert_event(command_params, service, user_name,calendar.table_data, calendar.full_time_list)
+        cc_events = event_maker.get_code_clinic_events(service, 7) 
+        us_events = event_maker.get_user_events(service, 7)
+        create.insert_event(command_params, service, user_name,calendar.table_data, calendar.full_time_list, cc_events, us_events)
         calendar.table_data = []
     elif command == "cancel":
         events = event_maker.get_user_events(service, 7)

@@ -197,17 +197,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 import re, datetime
 
 def valid_date(start_date):
@@ -223,7 +212,6 @@ def valid_time(start_time):
         return False
 
 def validate_params(command_params):
-    print (command_params)
     if command_params == []:
         print("invalid request, plese try again")
         return "", ""
@@ -242,13 +230,73 @@ def validate_params(command_params):
 
     return "", ""
 
-def insert_event(command_params, service, user_name, table_data, full_time_list):
-    print("command_params: ", command_params)
+def clearing_dates(table_data):
+    available_dates = table_data[0]
+    available_dates.pop(available_dates.index(""))
+    return available_dates
+
+def validated_slot(table_data, date, time):
+    start_times = ['08:00', '08:30', '10:00', '11:30', '13:00', '14:30', '16:00', '17:30']
+    available_dates = clearing_dates(table_data)
+    time_in = False
+    date_in = False
+    for i in start_times:
+        if time == str(i):
+            time_in = True
+            break
+
+    for i in available_dates:
+        if date == str(i):
+            date_in = True
+            break
+
+    if time_in == True and date_in == True:
+        return True
+    else:
+        return False
+
+def user_pre_slotted(cc_events, user_name):
+    creators = list()
+    start_times = list()
+    for i in range(len(cc_events)):
+        creators.append(cc_events[i]['creator']['email'])
+        start_times.append(cc_events[i]['start']['dateTime'])
+
+    creator_names = list()
+    for i in range(len(creators)):
+        name = creators[i]
+        name = name.split('@')
+        creator_names.append(name[0])
+
+    slots = [cc_events[num]['start']['dateTime'] for num, user in enumerate(creator_names) if creator_names[num] == user_name]
+    return slots
+
+def already_booked(slots, date, time):
+    date_time = f'{date}T{time}:00+02:00'
+    conflicted_times = ''
+    for i in slots:
+        if date_time == i:
+            conflicted_times = i
+            break
+    
+    if conflicted_times != '':
+        return False
+    else:
+        return True
+
+def insert_event(command_params, service, user_name, table_data, full_time_list,\
+    cc_events, us_events):
     date, time = validate_params(command_params)
-    print(date, time)
+
+    if validated_slot(table_data, date, time) == False:
+        print("Invalid time slot, please stick to the allotted times, please check the calendar")
+        return
+
+    slots = user_pre_slotted(cc_events, user_name)
+    if already_booked(slots, date, time) == False:
+        print(f"You have already a time booked on '{date}' at '{time}'")
+        return
+
     
 
-    # print("service: ", service)
-    # print("user_name:", user_name)
-    # print("table_data: ", table_data)
-    # print("full_time_list: ", full_time_list)
+    print("MORE VALIDATION")
