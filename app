@@ -48,16 +48,15 @@ def handle_command(command, command_params, service, user_name, role):
         return
     #./app create 2020-12-09 08:00
     #./app cancel 'id-start-event'
-    print(command)
-    print(command_params)
-    print(service)
-    print(user_name)
+    # print(command)
+    # print(command_params)
+    # print(service)
+    # print(user_name)
 
     if command == "create":
         events = event_maker.get_user_events(service, 7)
         calendar.generate_table(8,events)
-        create.insert_event(service, user_name, calendar.table_data, \
-            events, calendar.full_time_list)
+        create.insert_event(command_params, service, user_name,calendar.table_data, calendar.full_time_list)
         calendar.table_data = []
     elif command == "cancel":
         events = event_maker.get_user_events(service, 7)
