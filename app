@@ -162,12 +162,10 @@ def argument_validator(action):
     :returns: command (being the valid action to take), lower case
     :returns: all the params for the argument, lower case
     """
-    
     command = ""
     params = ""
-    for comms in action:
-        if comms in valid_action():
-            command = comms
+    if action[0] in valid_action():
+        command = action[0]
 
     if not command == "":
         action.pop(action.index(command))
