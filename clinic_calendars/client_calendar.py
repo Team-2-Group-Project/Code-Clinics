@@ -142,5 +142,4 @@ def print_table(i,events,username):
     table.inner_row_border = True
     table.padding_left = 0
     table.padding_right = 0
-    print(table_data)
     print(table.table)
