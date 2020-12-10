@@ -8,7 +8,7 @@ def get_code_clinic_events(service, future_date):
     now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
     a_week = datetime.date.today() + datetime.timedelta(days=future_date)
     a_week = str(a_week) + 'T23:59:59.999999+02:00'
-    print(f'Getting the upcoming {future_date} days events of your calendar')
+    # print(f'Getting the upcoming {future_date} days events of your calendar')
     events_result = service.events().list(calendarId='teamtwotesting@gmail.com', timeMin=now,
                                           timeMax=a_week, singleEvents=True,
                                           orderBy='startTime').execute()
@@ -26,7 +26,7 @@ def get_user_events(service, future_date):
     now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
     a_week = datetime.date.today() + datetime.timedelta(days=future_date)
     a_week = str(a_week) + 'T23:59:59.999999+02:00'
-    print(f'Getting the upcoming {future_date} days events of your calendar')
+    # print(f'Getting the upcoming {future_date} days events of your calendar')
     events_result = service.events().list(calendarId='primary', timeMin=now,
                                           timeMax=a_week, singleEvents=True,
                                           orderBy='startTime').execute()

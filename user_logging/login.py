@@ -1,6 +1,6 @@
 import json, datetime, sys, os
 USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '../'))
-print(USER_PATHS)
+# print(USER_PATHS)
 sys.path.insert(0, USER_PATHS + "/")
 from api_calls import serives_maker, event_maker
 

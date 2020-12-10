@@ -31,10 +31,15 @@ def validate_params(command_params):
 
     return "", ""
 
-def meeting_setups(command_params):
-    summary = command_params[0]
-    description = command_params[1]
-    return summary, description
+def meeting_setups(command_params, user_name):
+    if command_params:
+        summary = command_params[0]
+        description = command_params[1]
+        return summary, description
+    else:
+        summary = user_name
+        description = "Open for anything"
+        return summary, description
 
 def clearing_dates(table_data):
     available_dates = table_data[0]
@@ -130,10 +135,10 @@ def do_you_have_meetings(service, date, time, user_name):
         return False
     return False
 
-def insertion_of_event(service, event):
+def insertion_of_event(service, event, date, time):
     try:
         service.events().insert(calendarId='teamtwotesting@gmail.com', body=event, maxAttendees=2, sendUpdates='all', sendNotifications=True).execute()
-        return print("Event has been created")
+        return print(f"The event(s) have been created at {time} on the {date}")
     except:
         print("A spooky thing happened. Please try again.")
 
@@ -188,19 +193,19 @@ def create_event(date, time, summary, description, user_name, service):
     }
 
     if time == '08:00' or time == '17:30':
-        insertion_of_event(service,event)
+        insertion_of_event(service, event, date, time)
     else:
         for i in range(3):
             starttime = str(valid_slot + datetime.timedelta(minutes=(i) * 30)).split(" ")
             endtime = str(valid_slot + datetime.timedelta(minutes=(i + 1) * 30)).split(" ")
             event["start"]["dateTime"] = f'{starttime[0]}T{starttime[1]}+02:00'
             event["end"]["dateTime"] = f'{endtime[0]}T{endtime[1]}+02:00'
-            insertion_of_event(service, event)
+            insertion_of_event(service, event, starttime[0], starttime[1])
     return 
 
 def insert_event(command_params, service, user_name, table_data, full_time_list, cc_events, us_events):
     date, time = validate_params(command_params[:2])
-    summary, description = meeting_setups(command_params[2:])
+    summary, description = meeting_setups(command_params[2:], user_name)
 
     if validated_slot(table_data, date, time) == False:
         print("Invalid time slot, please stick to the allotted times, please check the calendar.")
