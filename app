@@ -85,10 +85,10 @@ def handle_command(command, command_params, service, user_name, role):
             print('You have no meetings in your calendar')
 
     elif command == "join":
-        events = event_maker.get_user_events(service, 7)
-        call_calendar(events, calendar,service,user_name)
-        #calander_id = meetings_lists(events)
-        # book.insert_patient(service, action.split()[1], user_name)
+        print("Attempting to join the event...")
+        cc_events = event_maker.get_code_clinic_events(service, 7) 
+        book.insert_patient(service, command_params, user_name, cc_events)
+        return
 
     elif command == "leave":
         events = event_maker.get_user_events(service, 7)
@@ -195,11 +195,8 @@ def main():
         print(("\033[1;32mLogging out\033[0m"))
         logout.logout()
         sys.exit()
-    # else:
-    #     print(("\033[1;32mWelcome to Code Clinic!\033[0m"))
     user_name, role = login.log_in_checker()
     service = serives_maker.creating_service()
-    # handle_command(action, service, user_name, role)
     handle_command(command, command_params, service, user_name, role)
 
 
