@@ -4,11 +4,11 @@ from api_calls import serives_maker, event_maker
 from user_logging import login, logout
 from clinician import create, cancel, update
 from patient import book, leave
-from clinic_calendars import patient_calendar, clinician_calendar
-import clinician.freebusy as freebusy
+from clinic_calendars import patient_calendar, clinician_calendar, delete_calendar
+# import clinician.freebusy as freebusy
 
 def valid_action():
-    return ["create", "cancel", "update", "meeting_list","join", "leave","logout",'help']
+    return ["create", "cancel", "update", "meeting_list","join", "leave","logout",'help','create_calendar_slot','join_calendar_slot','delete_calendar_slot']
 
 
 def valid_command(action):
@@ -39,9 +39,6 @@ def handle_command(command, command_params, service, user_name, role):
     Creating conditions that will take the users input
     , then performing the requested action
     '''
-    #THIS LINE IS TO BE DELETED ONCE WE REMOVE ROLES
-    calendar = clinician_calendar if role == "c" else patient_calendar
-
 
     if command == "help":
         help_func()
@@ -74,7 +71,34 @@ def handle_command(command, command_params, service, user_name, role):
         update.update_event(service, calander_id)
     elif command == "meeting_list":
         events = event_maker.get_user_events(service, 7)
-        calendar.print_table(8, events)
+        calendar.print_table(8, events,user_name)
+
+
+    elif command == 'join_calendar_slot':
+        events = event_maker.get_user_events(service, 7)
+        try:
+            patient_calendar.generate_table(8,events, fetch_calendar(service),user_name)
+            patient_calendar.table_data = []
+        except:
+            print("You have no meetings in your calendar")
+
+
+    elif command == 'delete_calendar_slot':
+        events = event_maker.get_user_events(service, 7)
+        try:
+            delete_calendar.generate_table(8,fetch_calendar(service),user_name)
+            delete_calendar.table_data = []
+        except:
+            print("You have no meetings in your calendar")
+
+
+    elif command == 'create_calendar_slot':
+        events = event_maker.get_user_events(service, 7)
+        try:
+            clinician_calendar.print_table(8, events,user_name)
+        except:
+            print('You have no meetings in your calendar')
+
     elif command == "join":
         events = event_maker.get_user_events(service, 7)
         call_calendar(events, calendar,service,user_name)
