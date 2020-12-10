@@ -95,13 +95,6 @@ def handle_command(command, command_params, service, user_name, role):
         call_calendar(events, calendar,service,user_name)
         calander_id = meetings_lists(events)
         leave.delete_event(service, calander_id, user_name)
-    
-    
-    elif command == "leave":
-        events = event_maker.get_user_events(service, 7)
-        call_calendar(events, calendar,service,user_name)
-        calander_id = meetings_lists(events)
-        leave.delete_event(service, calander_id, user_name)
        
     return
 
