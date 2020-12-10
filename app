@@ -120,26 +120,26 @@ def help_func():
    Please copy and paste the code in '<>' to call the functions:\n\
    \nlogging in and out:\n\
    login                     Creates a log in session with you as the user                  \
-   <python3 app.py login "username">
+   <./app.py login "username">
    logout                    logs you out of the code clinics calendar                      \
-   <python3 app.py logout>
+   <./app.py logout>
    \nVolunteering commands:\n\
    create                    Create a slot (of 3x30 minutes), to host a code-clinic         \
-   <python3 app.py create "date" "time" "summary" "description">
+   <./app.py create "date" "time" "summary" "description">
    update                    Update an existing slots description/summary                   \
-   <python3 app.py update "id" "summary" "description">
+   <./app.py update "id" "summary" "description">
    delete                    Deletes an individual users sessions of code clinics           \
-   <python3 app.py delete "id">
+   <./app.py delete "id">
    \nBooking commands:\n\
    join                      Join a code clinic slot (of 1x30 minutes) with a host          \
-   <python3 app.py join "id_of_session" "description">
+   <./app.py join "id_of_session" "description">
    leave                     Leave a session that you are apart of                          \
-   <python3 app.py leave "id_of_session">
+   <./app.py leave "id_of_session">
    \nCalendar commands:\n\
    voluntee_calendar     See a preview of the volunteering calendar, and the available slots\
-   <python3 app.py "voluntee_calendar">
+   <./app.py "voluntee_calendar">
    booking_calendar          See a preview of the booking calendar, and the available slots \
-   <python3 app.py "booking_calendar"> 
+   <./app.py "booking_calendar"> 
    """
     print(helped)
     return helped
