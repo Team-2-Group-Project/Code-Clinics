@@ -57,6 +57,7 @@ def handle_command(command, command_params, service, user_name, role):
         us_events = event_maker.get_user_events(service, 7)
         create.insert_event(command_params, service, user_name,calendar.table_data, calendar.full_time_list, cc_events, us_events)
         calendar.table_data = []
+
     elif command == "cancel":
         events = event_maker.get_user_events(service, 7)
         calendar.print_table(8, events)
@@ -64,14 +65,15 @@ def handle_command(command, command_params, service, user_name, role):
         cancel.delete_event(service, user_name, calendar.table_data, \
             events, calendar.full_time_list)
         calendar.table_data = []
+
     elif command == "update":
         events = event_maker.get_user_events(service, 7)
         call_calendar(events, calendar,service,user_name)
         calander_id = meetings_lists(events)
         update.update_event(service, calander_id)
-    elif command == "meeting_list":
-        events = event_maker.get_user_events(service, 7)
-        calendar.print_table(8, events,user_name)
+    # elif command == "meeting_list":
+    #     events = event_maker.get_user_events(service, 7)
+    #     calendar.print_table(8, events,user_name)
 
 
     elif command == 'join_calendar_slot':
@@ -104,6 +106,7 @@ def handle_command(command, command_params, service, user_name, role):
         call_calendar(events, calendar,service,user_name)
         #calander_id = meetings_lists(events)
         # book.insert_patient(service, action.split()[1], user_name)
+
     elif command == "leave":
         events = event_maker.get_user_events(service, 7)
         call_calendar(events, calendar,service,user_name)
@@ -297,3 +300,4 @@ if __name__ == '__main__':
     main()
     # service = serives_maker.creating_service()
     # freebusy.validate_douplicate_slots(service)
+list
