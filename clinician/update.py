@@ -17,6 +17,9 @@ def update_event(service, params, events, user_name):
     if len(params) == 3:
         summary = params[1]
         description = params[2]
+    else:
+        print("Please add what you would like to change.")
+        return
     event['summary'] = summary
     event['description'] = description
 

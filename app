@@ -86,15 +86,14 @@ def handle_command(command, command_params, service, user_name, role):
 
     elif command == "join":
         print("Attempting to join the event...")
-        cc_events = event_maker.get_code_clinic_events(service, 7) 
+        cc_events = event_maker.get_code_clinic_events(service, 7)
         book.insert_patient(service, command_params, user_name, cc_events)
         return
 
     elif command == "leave":
-        events = event_maker.get_user_events(service, 7)
-        call_calendar(events, calendar,service,user_name)
-        calander_id = meetings_lists(events)
-        leave.delete_event(service, calander_id, user_name)
+        print("Attempting to leave the event...")
+        cc_events = event_maker.get_code_clinic_events(service, 7)
+        leave.delete_event(service, command_params[0], user_name)
        
     return
 
@@ -126,18 +125,16 @@ def help_func():
    <python3 app.py logout>
    \nVolunteering commands:\n\
    create                    Create a slot (of 3x30 minutes), to host a code-clinic         \
-   <python3 app.py create "summary" "description" "date" "time">
+   <python3 app.py create "date" "time" "summary" "description">
    update                    Update an existing slots description/summary                   \
    <python3 app.py update "id" "summary" "description">
    delete                    Deletes an individual users sessions of code clinics           \
    <python3 app.py delete "id">
    \nBooking commands:\n\
    join                      Join a code clinic slot (of 1x30 minutes) with a host          \
-   <python3 app.py join "host_username" "id_of_session" "description">
+   <python3 app.py join "id_of_session" "description">
    leave                     Leave a session that you are apart of                          \
-   <python3 app.py leave "host_username" "id_of_session">
-   update                    Update the description with what you need help with            \
-   <python3 app.py update "host_username" "id_of_session" "description"
+   <python3 app.py leave "id_of_session">
    \nCalendar commands:\n\
    voluntee_calendar     See a preview of the volunteering calendar, and the available slots\
    <python3 app.py "voluntee_calendar">

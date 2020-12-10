@@ -3,27 +3,28 @@ def current_events(service, calander_id):
 
     return event
 
-def delete_event(service, calander_id, user_name):
-    event = current_events(service, calander_id)
 
-    # print(event)
+def leaving(service, event):
+    try:
+        service.events().update(calendarId='teamtwotesting@gmail.com', eventId=event['id'], body=event, maxAttendees=2, sendUpdates='all', sendNotifications=True, alwaysIncludeEmail=True).execute()
+        print("You have left the meeting.")
+    except:
+        print("No event with that name was found.")
 
-    # meetings = [item for item in event if item["email"].lower() == user_name+'@student.wethinkcode.co.za']
-    # print(meetings)
 
+def delete_event(service, params, user_name):
+    event = current_events(service, params)
     count = 0
     for i in event['attendees']:
         if i['email'] != user_name+'@student.wethinkcode.co.za':
             count += 1
             continue
-        else:
+
+    if count != 0:
+        if (event["id"]) == params:
             event['attendees'].pop(count)
-        count += 1
-
-    try:
-        updated_event = service.events().update(calendarId='teamtwotesting@gmail.com', eventId=event['id'], body=event, maxAttendees=2, sendUpdates='all', sendNotifications=True, alwaysIncludeEmail=True).execute()
-        print("You have been removed")
-    except:
-        print("No event with that name was found")
-
-    return
+            leaving(service, event)
+        else:
+            print("The ID's do not match, please try again.")
+    else:
+        print("This is not your slot, please choose your own slot.")

@@ -95,6 +95,7 @@ def insert_patient(service, command_params, user_name, cc_events):
         return
 
     event['attendees'].append({'email': f'{user_name}@student.wethinkcode.co.za'})
+    # event['attendees'].append({'email': f'anell@student.wethinkcode.co.za'})
 
     if do_you_have_meetings(service, date, time, user_name) == False:
         print("You already have a meeting at this time in your calendar.")
