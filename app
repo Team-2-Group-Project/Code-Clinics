@@ -4,10 +4,10 @@ from api_calls import serives_maker, event_maker
 from user_logging import login, logout
 from clinician import create, cancel, update
 from patient import book, leave
-from clinic_calendars import patient_calendar, clinician_calendar, delete_calendar
+from clinic_calendars import patient_calendar, clinician_calendar, delete_calendar, update_calendar_slot, leave_calendar
 
 def valid_action():
-    return ["create", "cancel", "update", "join", "leave","logout",'help','create_calendar_slot','join_calendar_slot','delete_calendar_slot']
+    return ["create", "cancel", "update", "join", "leave","logout",'help','create_calendar_slot','join_calendar_slot','delete_calendar_slot','update_calendar_slot','leave_calendar_slot']
 
 
 def valid_command(action):
@@ -32,7 +32,7 @@ def call_calendar(events, calendar,service,user_name):
         print("You have no meetings in your calendar")
 
 
-def handle_command(command, command_params, service, user_name, role):
+def handle_command(command, command_params, service, user_name):
     '''
     Creating conditions that will take the users input, then performing the requested action
     '''
@@ -83,6 +83,22 @@ def handle_command(command, command_params, service, user_name, role):
             clinician_calendar.print_table(8, events,user_name)
         except:
             print('You have no meetings in your calendar')
+
+    elif command == 'leave_calendar_slot':
+        events = event_maker.get_user_events(service, 7)
+        try:
+            leave_calendar.generate_table(8, fetch_calendar(service),user_name)
+        except:
+            print('You have no meetings in your calendar')
+
+    
+    elif command == 'update_calendar_slot':
+        events = event_maker.get_user_events(service, 7)
+        try:
+            update_calendar_slot.generate_table(8, fetch_calendar(service),user_name)
+        except:
+            print('You have no meetings in your calendar')
+
 
     elif command == "join":
         print("Attempting to join the event...")
@@ -137,9 +153,15 @@ def help_func():
    <./app.py leave "id_of_session">
    \nCalendar commands:\n\
    voluntee_calendar     See a preview of the volunteering calendar, and the available slots\
-   <./app.py "voluntee_calendar">
-   booking_calendar          See a preview of the booking calendar, and the available slots \
-   <./app.py "booking_calendar"> 
+   <./app.py "create_calendar_slot">
+   join_calendar         See a preview of the booking calendar, and the available slots \
+   <./app.py "join_calendar_slot"> 
+   delete_calendar       See all the slots you can delete\
+   <app "delete_calendar_slot">
+   update_calendar       See all the events you can update\
+   <app "update_calendar_slot">
+   leave_calendar        See all the events you can leave\
+   <app "leave_calendar_slot">
    """
     print(helped)
     return helped
@@ -185,9 +207,9 @@ def main():
         print(("\033[1;32mLogging out\033[0m"))
         logout.logout()
         sys.exit()
-    user_name, role = login.log_in_checker()
+    user_name = login.log_in_checker()
     service = serives_maker.creating_service()
-    handle_command(command, command_params, service, user_name, role)
+    handle_command(command, command_params, service, user_name)
 
 
 if __name__ == '__main__':
