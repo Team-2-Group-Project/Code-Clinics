@@ -157,7 +157,6 @@ def generate_table(i,dict,username):
     table.inner_row_border = True
     table.padding_left = 0
     table.padding_right = 0
-    print(table_data)
     print(table.table)    # f = open('user_info.json', 'r')
     # contents = f.read()
     # user_info = ast.literal_eval(contents)
