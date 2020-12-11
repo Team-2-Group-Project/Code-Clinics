@@ -32,12 +32,12 @@ def which_role(user_name):
 
 def log_in_checker():
     user_name = ''
-    with open('.user_info.json', 'r+') as f:
+    with open(USER_PATHS + '/.user_info.json', 'r+') as f:
         data = json.load(f)
     if data['expire'] == '':
         data['expire'] = datetime.datetime.now() + datetime.timedelta(hours=8)
         data['expire'] = data['expire'].strftime("%Y/%m/%d, %H:%M:%S")
-        with open('.user_info.json', 'w+') as f:
+        with open(USER_PATHS + '/.user_info.json', 'w+') as f:
             json.dump(data, f)
     elif datetime.datetime.strptime(data['expire'],'%Y/%m/%d, %H:%M:%S') > datetime.datetime.now():
         return data['user'],data['role']
@@ -46,13 +46,13 @@ def log_in_checker():
         data['role'] = ''
         data['expire'] = datetime.datetime.now() + datetime.timedelta(hours=8)
         data['expire'] = data['expire'].strftime("%Y/%m/%d, %H:%M:%S")
-        with open('.user_info.json', 'w+') as f:
+        with open(USER_PATHS + '/.user_info.json', 'w+') as f:
             json.dump(data, f)
     if data['user'] == '':
         user_name = user_name_func()
         serives_maker.creating_service()
         data['user'] = user_name
-        with open('.user_info.json', 'w+') as f:
+        with open(USER_PATHS + '/.user_info.json', 'w+') as f:
             json.dump(data, f)
     # else:
     #     os.remove('token.pickle')
@@ -61,8 +61,8 @@ def log_in_checker():
     #     with open('.user_info.json', 'w+') as f:
     #         json.dump(data, f)
     #     return
-    if data['role'] == '':
-        role = which_role(data['user'])
-    else:
-        role = data['role']
-    return data['user'],role
+    # if data['role'] == '':
+    #     role = which_role(data['user'])
+    # else:
+    #     role = data['role']
+    return data['user']
