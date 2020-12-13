@@ -7,6 +7,9 @@ from patient import book, leave
 from clinic_calendars import patient_calendar, clinician_calendar, delete_calendar, update_calendar_slot, leave_calendar
 
 def valid_action():
+    """
+    Returns a list of every valid action that the users can run.
+    """
     return ["create", "cancel", "update", "join", "leave","logout",'help','create_calendar','join_calendar','delete_calendar','update_calendar','leave_calendar']
 
 
@@ -34,7 +37,7 @@ def call_calendar(events, calendar,service,user_name):
 
 def handle_command(command, command_params, service, user_name):
     '''
-    Creating conditions that will take the users input, then performing the requested action
+    Creating conditions that will take the users input, then performing the requested action.
     '''
 
     if command == "help":
@@ -115,12 +118,20 @@ def handle_command(command, command_params, service, user_name):
 
 
 def arguments():
+    """
+    Grabs all the system arguments that the users passed in and removes the name
+    of the file that was run only keeping the passed args.
+    """
     arg = sys.argv
     arg = arg[1:]
     return arg
 
 
 def fetch_calendar(service):
+    """
+    Fetches the 2 different calendars, 'code-clinics' and 'users'
+    returns the 'code-clinics' calendar.
+    """
     tttevent = event_maker.get_code_clinic_events(service, 7)
     primaryevent = event_maker.get_user_events(service, 7)
 

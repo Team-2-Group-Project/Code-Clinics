@@ -1,6 +1,12 @@
 import datetime
 
 def already_booked(slots, attendees, user_name):
+    """
+    Creates a flag to check if the attendees is already there.
+    if the email is equal to the logged in email, set flag to true.
+    If the flag is True return False
+    Else return True
+    """
     already_joined = False
     for i in attendees:
         if i["email"] == user_name+'@student.wethinkcode.co.za':
@@ -11,13 +17,26 @@ def already_booked(slots, attendees, user_name):
     else:
         return True
 
+
 def fully_booked(slots, attendees, user_name):
+    """
+    Checks if the list of attendees is already at the max of two or not.
+    if it is 2 or more returns False
+    else Returns True
+    """
     if len(attendees) >= 2:
         return False
     else:
         return True
 
+
 def user_pre_slotted(cc_events, user_name):
+    """
+    Makes a Creators and Start_times list, append all the creators
+    and date times. as well as splitting them all  on the "@".
+    Slots = the dateTime for each of the creators.
+    returns slots
+    """
     creators = list()
     start_times = list()
     for i in range(len(cc_events)):
@@ -33,21 +52,29 @@ def user_pre_slotted(cc_events, user_name):
     slots = [cc_events[num]['start']['dateTime'] for num, user in enumerate(creator_names) if creator_names[num] == user_name]
     return slots
 
+
 def current_events(service, calander_id):
+    """
+    Grabs and returns the current events from the 'code-clinics' calendar.
+    returns it as an event.
+    """
     event = service.events().get(calendarId='teamtwotesting@gmail.com', eventId=calander_id).execute()
     return event
 
+
 def make_datetime_from_string(string):
     """
-    Creates a dattime object form a given string
-    Parameter:  string (yyy-mm-ddTHH:MM:00+0200)
-    Returns:    datetime object
+    Creates a dattime object form a given string, in the right format.
+    :return: a datetime in the correct format.
     """
     return datetime.datetime.strptime(string, "%Y-%m-%dT%H:%M:%S%z")
 
+
 def freebusy_check(service, date, time, user_name):
     """
-    Needs to be in the ISO FORMAT for it to work properly...
+    checks the format for timeMin and timeMax as well as the timezones.
+    then checks the id for both calendars.
+    returns the eventsResults.
     """
     event = {
         "timeMin": (make_datetime_from_string(f'{date}T{time}:00+0200')).isoformat(),
@@ -66,7 +93,15 @@ def freebusy_check(service, date, time, user_name):
     eventsResult = service.freebusy().query(body=event).execute()
     return eventsResult
 
+
 def do_you_have_meetings(service, date, time, user_name):
+    """
+    Grabs the events from freebusy_check
+    seperates the 2 calendars based on the events.
+    Check if the patients calendar is empty in the alotted time.
+    If patient['busy'] == []: return true
+    else they have an event and return false
+    """
     events = freebusy_check(service, date, time, user_name)
     two_cals = events['calendars']
     patient, clinic = two_cals[user_name+'@student.wethinkcode.co.za'], two_cals['teamtwotesting@gmail.com']
@@ -77,13 +112,22 @@ def do_you_have_meetings(service, date, time, user_name):
         return False
     return False
 
+
 def insert_patient(service, command_params, user_name, cc_events):
+    """
+    Creates all variables that will be used, for the params, and the date/time.
+    Checks if the user already has slots. If false return.
+    Checks if the slot is already fully booked. if False return.
+    Adds the user to the event.
+    checks if you already have meetings or not.
+    trys to update the calendar slot, if it succeeds prints "You have successfully joined"
+    If failed prints "No event with that name was found".
+    """
     event = current_events(service, command_params[0])
     begin = event['start']["dateTime"]
     begin = begin.split("T")
     date = begin[0]
     time = begin[1][:5]
-
 
     slots = user_pre_slotted(cc_events, user_name)
     if already_booked(slots, event["attendees"], user_name) == False:
@@ -95,7 +139,6 @@ def insert_patient(service, command_params, user_name, cc_events):
         return
 
     event['attendees'].append({'email': f'{user_name}@student.wethinkcode.co.za'})
-    # event['attendees'].append({'email': f'anell@student.wethinkcode.co.za'})
 
     if do_you_have_meetings(service, date, time, user_name) == False:
         print("You already have a meeting at this time in your calendar.")

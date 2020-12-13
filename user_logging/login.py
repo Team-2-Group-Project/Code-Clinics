@@ -13,6 +13,11 @@ def user_name_func():
 
 
 def log_in_checker():
+    """
+    Checks the user log in info:
+    Checks if the expiry time in the user_info file has expired or not.
+    Checks for the user roles and sets them up if they do not exist.
+    """
     user_name = ''
     with open('.user_info.json', 'r+') as f:
         data = json.load(f)
