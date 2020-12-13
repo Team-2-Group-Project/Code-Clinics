@@ -2,7 +2,6 @@ from __future__ import print_function
 import pickle
 import os.path
 import os
-USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '../'))
 import sys
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -23,7 +22,7 @@ def creating_service():
     # created automatically when the authorization flow completes for the first
     # time.
     if os.path.exists('token.pickle'):
-        with open(USER_PATHS + '/token.pickle', 'rb') as token:
+        with open('token.pickle', 'rb') as token:
             creds = pickle.load(token)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
@@ -34,7 +33,7 @@ def creating_service():
                 '.credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open(USER_PATHS + '/token.pickle', 'wb') as token:
+        with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
     service = build('calendar', 'v3', credentials=creds)
     return service
