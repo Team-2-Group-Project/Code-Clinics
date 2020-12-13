@@ -1,4 +1,4 @@
-# Iteration_1
+Code Clinics Group Project Team 2
 
 Please run the following commands to set up the environment:
 
