@@ -1,9 +1,15 @@
 # Iteration_1
 
-The Main focus code for our project.
+Please run the following commands to set up the environment:
 
-The previous completed and demo'd versions arein their own project repos.
+If pip does not work, please replace it with pip3
+- pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+- pip install terminaltables
 
-- Iteration 1 (done)
-- Iteration 2 (done)
-- Iteration 3 (In Progress)
+To run the unit tests please run the following commands:
+- python3 tests/test_app.py
+- python3 tests/test_c_insert.py
+- python3 tests/test_calendar.py
+
+To find all the commands that are related to the program, run the following commands:
+- ./app help
