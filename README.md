@@ -1,4 +1,4 @@
-Code Clinics Group Project Team 2
+# Code Clinics Group Project Team 2
 
 Please run the following commands to set up the environment:
 
