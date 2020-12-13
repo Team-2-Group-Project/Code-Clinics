@@ -165,15 +165,15 @@ def help_func():
    <./app leave "id_of_session">
    \nCalendar commands:\n\
    voluntee_calendar     See a preview of the volunteering calendar, and the available slots\
-   <./app "create_calendar_slot">
+   <./app "create_calendar">
    join_calendar         See a preview of the booking calendar, and the available slots     \
-   <./app "join_calendar_slot"> 
+   <./app "join_calendar"> 
    delete_calendar       See all the slots you can delete                                   \
-   <./app "delete_calendar_slot">
+   <./app "delete_calendar">
    update_calendar       See all the events you can update                                  \
-   <./app "update_calendar_slot">
+   <./app "update_calendar">
    leave_calendar        See all the events you can leave                                   \
-   <./app "leave_calendar_slot">
+   <./app "leave_calendar">
    """
     print(helped)
     return helped
