@@ -7,7 +7,7 @@ from patient import book, leave
 from clinic_calendars import patient_calendar, clinician_calendar, delete_calendar, update_calendar_slot, leave_calendar
 
 def valid_action():
-    return ["create", "cancel", "update", "join", "leave","logout",'help','create_calendar_slot','join_calendar_slot','delete_calendar_slot','update_calendar_slot','leave_calendar_slot']
+    return ["create", "cancel", "update", "join", "leave","logout",'help','create_calendar','join_calendar','delete_calendar','update_calendar','leave_calendar']
 
 
 def valid_command(action):
@@ -61,7 +61,7 @@ def handle_command(command, command_params, service, user_name):
         update.update_event(service, command_params, events, user_name)
         return
 
-    elif command == 'join_calendar_slot':
+    elif command == 'join_calendar':
         events = event_maker.get_user_events(service, 7)
         try:
             patient_calendar.generate_table(8,events, fetch_calendar(service),user_name)
@@ -69,7 +69,7 @@ def handle_command(command, command_params, service, user_name):
         except:
             print("You have no meetings in your calendar")
 
-    elif command == 'delete_calendar_slot':
+    elif command == 'delete_calendar':
         events = event_maker.get_user_events(service, 7)
         try:
             delete_calendar.generate_table(8,fetch_calendar(service),user_name)
@@ -77,14 +77,14 @@ def handle_command(command, command_params, service, user_name):
         except:
             print("You have no meetings in your calendar")
 
-    elif command == 'create_calendar_slot':
+    elif command == 'create_calendar':
         events = event_maker.get_user_events(service, 7)
         try:
             clinician_calendar.print_table(8, events,user_name)
         except:
             print('You have no meetings in your calendar')
 
-    elif command == 'leave_calendar_slot':
+    elif command == 'leave_calendar':
         events = event_maker.get_user_events(service, 7)
         try:
             leave_calendar.generate_table(8, fetch_calendar(service),user_name)
@@ -92,7 +92,7 @@ def handle_command(command, command_params, service, user_name):
             print('You have no meetings in your calendar')
 
     
-    elif command == 'update_calendar_slot':
+    elif command == 'update_calendar':
         events = event_maker.get_user_events(service, 7)
         try:
             update_calendar_slot.generate_table(8, fetch_calendar(service),user_name)
@@ -154,13 +154,13 @@ def help_func():
    \nCalendar commands:\n\
    voluntee_calendar     See a preview of the volunteering calendar, and the available slots\
    <./app.py "create_calendar_slot">
-   join_calendar         See a preview of the booking calendar, and the available slots \
+   join_calendar         See a preview of the booking calendar, and the available slots     \
    <./app.py "join_calendar_slot"> 
-   delete_calendar       See all the slots you can delete\
+   delete_calendar       See all the slots you can delete                                   \
    <app "delete_calendar_slot">
-   update_calendar       See all the events you can update\
+   update_calendar       See all the events you can update                                  \
    <app "update_calendar_slot">
-   leave_calendar        See all the events you can leave\
+   leave_calendar        See all the events you can leave                                   \
    <app "leave_calendar_slot">
    """
     print(helped)
@@ -176,6 +176,10 @@ def argument_validator(action):
     """
     command = ""
     params = ""
+
+    if not action:
+        return "", ""
+
     if action[0] in valid_action():
         command = action[0]
 
@@ -190,7 +194,6 @@ def argument_validator(action):
         print("no valid action found, please try again")
         help_func()
         return "", ""
-
     return command.lower(), params
 
 
@@ -207,7 +210,7 @@ def main():
         print(("\033[1;32mLogging out\033[0m"))
         logout.logout()
         sys.exit()
-    user_name = login.log_in_checker()
+    user_name = login.log_in_checker()[0]
     service = serives_maker.creating_service()
     handle_command(command, command_params, service, user_name)
 
