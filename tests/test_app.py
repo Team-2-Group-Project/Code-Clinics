@@ -5,6 +5,12 @@ import sys
 import os
 USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '../'))
 sys.path.insert(0, USER_PATHS + "/")
+from importlib.util import spec_from_loader, module_from_spec
+from importlib.machinery import SourceFileLoader 
+spec = spec_from_loader("app", SourceFileLoader("app", USER_PATHS + '/app'))
+app = module_from_spec(spec)
+spec.loader.exec_module(app)
+sys.modules['app'] = app
 import app
 
 
@@ -39,40 +45,40 @@ class Test_Quickstart(unittest.TestCase):
    These are the code-clinics commands that can be used in various situations:\n\
    Please copy and paste the code in '<>' to call the functions:\n\
    \nlogging in and out:\n\
-   login                     Creates a log in session with you as the user                  \
-   <./app.py login "username">
+   login                     logs the user in automatically when a command is entered       \
+   <./app login "username">
    logout                    logs you out of the code clinics calendar                      \
-   <./app.py logout>
+   <./app logout>
    \nVolunteering commands:\n\
    create                    Create a slot (of 3x30 minutes), to host a code-clinic         \
-   <./app.py create "date" "time" "summary" "description">
+   <./app create "date" "time" "summary" "description">
    update                    Update an existing slots description/summary                   \
-   <./app.py update "id" "summary" "description">
+   <./app update "id" "summary" "description">
    delete                    Deletes an individual users sessions of code clinics           \
-   <./app.py delete "id">
+   <./app delete "id">
    \nBooking commands:\n\
    join                      Join a code clinic slot (of 1x30 minutes) with a host          \
-   <./app.py join "id_of_session" "description">
+   <./app join "id_of_session" "description">
    leave                     Leave a session that you are apart of                          \
-   <./app.py leave "id_of_session">
+   <./app leave "id_of_session">
    \nCalendar commands:\n\
    voluntee_calendar     See a preview of the volunteering calendar, and the available slots\
-   <./app.py "create_calendar_slot">
-   join_calendar         See a preview of the booking calendar, and the available slots \
-   <./app.py "join_calendar_slot"> 
-   delete_calendar       See all the slots you can delete\
-   <app "delete_calendar_slot">
-   update_calendar       See all the events you can update\
-   <app "update_calendar_slot">
-   leave_calendar        See all the events you can leave\
-   <app "leave_calendar_slot">
+   <./app "create_calendar_slot">
+   join_calendar         See a preview of the booking calendar, and the available slots     \
+   <./app "join_calendar_slot"> 
+   delete_calendar       See all the slots you can delete                                   \
+   <./app "delete_calendar_slot">
+   update_calendar       See all the events you can update                                  \
+   <./app "update_calendar_slot">
+   leave_calendar        See all the events you can leave                                   \
+   <./app "leave_calendar_slot">
    """)
 
     def test_argument_validator(self):
         result1 = app.argument_validator(['create_calendar'])
         result2 = app.argument_validator(['join hbsadfbahsjbd'])
         self.assertEqual(result1,('create_calendar', []))
-        self.assertEqual(result2,('join','hbsadfbahsjbd'))
+        self.assertEqual(result2,('',''))
 
 
 if __name__ == '__main__':
