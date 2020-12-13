@@ -10,7 +10,8 @@ def valid_action():
     """
     Returns a list of every valid action that the users can run.
     """
-    return ["create", "cancel", "update", "join", "leave","logout",'help','create_calendar','join_calendar','delete_calendar','update_calendar','leave_calendar']
+    return ["create", "cancel", "update", "join", "leave", "login","logout",'help'\
+        ,'create_calendar','join_calendar','delete_calendar','update_calendar','leave_calendar']
 
 
 def valid_command(action):
@@ -221,6 +222,8 @@ def main():
         print(("\033[1;32mLogging out\033[0m"))
         logout.logout()
         sys.exit()
+    if command == 'login':
+        user_name = login.log_in_checker()[0]
     user_name = login.log_in_checker()[0]
     service = serives_maker.creating_service()
     handle_command(command, command_params, service, user_name)
